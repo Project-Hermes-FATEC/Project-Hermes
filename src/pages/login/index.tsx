@@ -15,6 +15,7 @@ import {
 import farm_bg from '../../assets/farm-background.webp'
 import logo from '../../assets/logo.png'
 import Layout from '../../components/layout'
+import { Link } from 'react-router-dom'
 
 
 export default function Login() {
@@ -33,7 +34,8 @@ export default function Login() {
             rounded={'lg'}
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
-            p={8}>
+            p={8}
+            >
 
             <Stack align={'center'}>
               <Image src={logo} boxSize='100px' />
@@ -57,14 +59,17 @@ export default function Login() {
                   <Checkbox colorScheme='green'>Lembrar de mim</Checkbox>
                   <Text color={'green.400'}>Esqueceu a senha?</Text>
                 </Stack>
-                <Button
+                <Stack>
+                <Link to = {'/Home'}><Button
                   bg={'yellow.400'}
                   color={'black'}
+                  width={'100%'}
                   _hover={{
-                    bg: 'yellow.500',
+                    bg: 'yellow.500'
                   }}>
                   Entrar
-                </Button>
+                </Button></Link>
+                </Stack>
               </Stack>
             </Stack>
           </Box>

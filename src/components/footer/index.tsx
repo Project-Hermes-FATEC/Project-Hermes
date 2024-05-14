@@ -10,7 +10,7 @@ export default function Footer() {
             minH={'50px'}
             bg={useColorModeValue('gray.50', 'gray.900')}
             color={useColorModeValue('gray.700', 'gray.200')}
-            maxW={'6xl'}
+            maxW={'100%'}
             display={'flex'}
             alignItems={'center'}
             justifyContent={'center'}>
@@ -18,7 +18,7 @@ export default function Footer() {
                 width={'100%'}
                 fontFamily={'Jockey One'}
                 fontSize={'15px'}>
-                © 2024 FATEC Indatuba. Todos os direitos reservados
+                © 2024 FATEC Indaiatuba. Todos os direitos reservados
             </Text>
         </Box>
     )
