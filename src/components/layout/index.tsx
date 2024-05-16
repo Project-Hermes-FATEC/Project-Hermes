@@ -1,5 +1,5 @@
 import Header from "../../components/header"
-import { Grid, GridItem } from "@chakra-ui/react"
+import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
 import Footer from "../footer"
 
 interface Props {
@@ -10,7 +10,12 @@ function Layout(props: Props) {
     const { children } = props
 
     return (
-        <Grid templateColumns={'1fr'} templateRows={'auto auto auto'}>
+        <Grid 
+        templateColumns={'1fr'} 
+        templateRows={'auto 1fr auto'} 
+        backgroundColor={useColorModeValue('gray.300', 'gray.800')}
+        backgroundSize={'cover'}
+        minH={'100vh'}>
             <GridItem colSpan={1} rowSpan={1}>
                 <Header />
             </GridItem>
@@ -19,7 +24,7 @@ function Layout(props: Props) {
             </GridItem>
             <GridItem colSpan={1} rowSpan={1}>
                 <Footer />
-            </GridItem>
+            </GridItem> 
         </Grid>
     )
 }

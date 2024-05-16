@@ -2,21 +2,19 @@
 import { Box, Button, Flex, Heading, VStack, Text, useColorModeValue, Tooltip, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Layout from "../../components/layout";
-import farm_bg from '../../assets/farm-background.webp';
 import Anneteste from "../../assets/members/Anneteste.jpg"
 import CarlosFiori from "../../assets/members/CarlosFiori.jpg"
 import ArthurSilva from "../../assets/members/ArthurSilva.jpg"
 import MaiconBruno from "../../assets/members/MaiconBruno.jpg"
-import Thiago from "../../assets/members/Thiago.jpg"
+import ThiagoNogueira from "../../assets/members/ThiagoNogueira.jpg"
+
 export default function Sobre() {
   return (
     <Layout>
       <Flex direction="column"
             alignItems="center"
             justifyContent="center"
-            minHeight="calc(100vh - 108px)"
-            backgroundImage={farm_bg}
-            backgroundSize={'cover'}>
+            minHeight="calc(100vh - 108px)">
         <Heading textColor='yellow' marginBottom={5}>Equipe Hermes</Heading>
         <Box rounded={'lg'}
              bg={useColorModeValue('white', 'gray.700')}
@@ -28,7 +26,7 @@ export default function Sobre() {
             { name: "Arthur Gonçalves Silva", image: ArthurSilva },
             { name: "Carlos Eduardo Fiori dos Santos", image: CarlosFiori },
             { name: "Anne Caroline dos Santos", image: Anneteste },
-            { name: "Thiago Nogueira", image: Thiago },
+            { name: "Thiago Nogueira", image: ThiagoNogueira },
             { name: "Maicon Bruno Oliveira", image: MaiconBruno }
           ].map((member, index) => (
             <Flex key={index} align="center" marginBottom={4}>

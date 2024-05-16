@@ -12,11 +12,9 @@ import {
   Image,
 } from '@chakra-ui/react'
 
-import farm_bg from '../../assets/farm-background.webp'
 import logo from '../../assets/logo.png'
 import Layout from '../../components/layout'
 import { Link } from 'react-router-dom'
-
 
 export default function Login() {
   return (
@@ -24,11 +22,7 @@ export default function Login() {
       <Flex
         minH={'calc(100vh - 108px)'}
         align={'center'}
-        justify={'center'}
-        bg={useColorModeValue('gray.50', 'gray.800')}
-        bgImg={farm_bg}
-        backgroundRepeat={'no-repeat'}
-        bgSize={'cover'}>
+        justify={'center'}>
         <Stack spacing={8} mx={'auto'} maxW={'lg'} width={'100%'} py={12} px={6}>
           <Box
             rounded={'lg'}
