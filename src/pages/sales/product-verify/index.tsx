@@ -17,7 +17,7 @@ import {
     Tr,
 } from '@chakra-ui/react';
 
-import trator_img from '../../../assets/trator_example.png'
+import trator_img from '../../../assets/produtos/trator_example.png'
 import Layout from '../../../components/layout';
 
 

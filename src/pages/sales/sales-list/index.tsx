@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { FaCheckCircle, FaRegCheckCircle, FaSearch } from 'react-icons/fa'
 import Layout from '../../../components/layout'
-import trator_img from '../../../assets/trator_example.png'
+import trator_img from '../../../assets/produtos/trator_example.png'
 import ButtonCustom from '../../../components/button'
 import { Link } from 'react-router-dom'
 

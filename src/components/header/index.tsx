@@ -8,25 +8,44 @@ import {
     useBreakpointValue,
     Image,
     HStack,
-    Avatar
+    Avatar,
+    Menu,
+    Center,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList
 } from '@chakra-ui/react'
 
-import logo_cervo_jd from '../../assets/John-Deere-Logo-Cervo.png'
-import { NavLink, useLocation } from 'react-router-dom'
+import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
+import { NavLink, useNavigate } from 'react-router-dom'
+import profileImg from '../../assets/members/ArthurSilva.jpg'
+import api from '../../pages/helpers/axios'
 
-const Links = [{ titulo: 'Página inicial', link: '/home' },
-{ titulo: 'Listar vendas', link: '/produto/listaVendas' },
-{ titulo: 'Registar venda', link: '/produto/verificarEntrada' }];
-
-function fakeAuth(){
-    if(useLocation().pathname.match('login')){
-        return false;
-    } else {
-        return true;
-    }
+interface Props {
+    isAuth: boolean
 }
 
-export default function Header() {
+export default function Header({ isAuth }: Props) {
+    const Links = [{ titulo: 'Página inicial', link: '/home' },
+    { titulo: 'Listar vendas', link: '/vendas/listar' },
+    { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
+
+    const userName = localStorage.getItem("name");
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.clear();
+
+        api.get("/auth/logout", {withCredentials: true}).then((res) => {
+            if (res.status === 204) {
+                navigate("/", { state: { message: "Você saiu da sua conta", type: "success" } });
+            }
+        }).catch(() => {
+            navigate("/")
+        })
+    }
+
     return (
         <Box>
             <Flex
@@ -56,10 +75,10 @@ export default function Header() {
 
 
                 {
-                    fakeAuth() ?
-                        <Stack 
-                        justify={'space-between'}
-                        direction={'row'}>
+                    isAuth ?
+                        <Stack
+                            justify={'space-between'}
+                            direction={'row'}>
                             <HStack spacing={8} alignItems={'center'} mr={5}>
                                 <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                                     {Links.map((link) => (
@@ -68,12 +87,36 @@ export default function Header() {
                                 </HStack>
                             </HStack>
 
-                            <Avatar
-                                size={'sm'}
-                                src={
-                                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                }
-                            />
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    rounded={'full'}
+                                    variant={'link'}
+                                    cursor={'pointer'}
+                                    minW={0}>
+                                    <Avatar
+                                        size={'sm'}
+                                        src={profileImg}
+                                    />
+                                </MenuButton>
+                                <MenuList alignItems={'center'}>
+                                    <br />
+                                    <Center>
+                                        <Avatar
+                                            size={'2xl'}
+                                            src={profileImg}
+                                        />
+                                    </Center>
+                                    <br />
+                                    <Center>
+                                        <p>{userName}</p>
+                                    </Center>
+                                    <br />
+                                    <MenuDivider />
+                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                </MenuList>
+                            </Menu>
+                            <Text>{userName}</Text>
                         </Stack>
 
                         :

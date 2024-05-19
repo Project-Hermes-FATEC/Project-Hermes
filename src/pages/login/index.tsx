@@ -12,13 +12,43 @@ import {
   Image,
 } from '@chakra-ui/react'
 
-import logo from '../../assets/logo.png'
+import logo from '../../assets/icons/logo.png'
 import Layout from '../../components/layout'
-import { Link } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import api from '../helpers/axios'
+import CardMessage from '../../components/cardMessage'
 
 export default function Login() {
+  const [userData, setUserData] = useState({
+    email: "",
+    password: ""
+  });
+  const [message, setMessage] = useState<string>();
+  const navigate = useNavigate();
+
+  async function handleLogin() {
+    setMessage("");
+
+    await api.post('/auth/login', userData, {withCredentials: true})
+      .then((resposta) => {
+        if (resposta.status === 200) {
+          localStorage.setItem("name", resposta.data.name);
+          localStorage.setItem("email", resposta.data.email);
+
+          navigate("/home", {state: {message: "Login realizado com sucesso!", type: "success"}});
+        } else {
+          alert(resposta);
+        }
+      }).catch((err) => {
+        console.log(err);
+        setMessage("Usuário ou senha inválidos");
+      });
+    }
+
   return (
     <Layout>
+      { message && <CardMessage message={message} type='fail'/> }
       <Flex
         minH={'calc(100vh - 108px)'}
         align={'center'}
@@ -29,42 +59,44 @@ export default function Login() {
             bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
             p={8}
-            >
-
+          >
             <Stack align={'center'}>
               <Image src={logo} boxSize='100px' />
               <Text fontSize={'lg'} color={'orange.300'}>Hermes</Text>
             </Stack>
 
             <Stack spacing={4}>
-              <FormControl id="email">
-                <FormLabel>Email</FormLabel>
-                <Input type="email" />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>Senha</FormLabel>
-                <Input type="password" />
-              </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={{ base: 'column', sm: 'row' }}
-                  align={'start'}
-                  justify={'space-between'}>
-                  <Checkbox colorScheme='green'>Lembrar de mim</Checkbox>
-                  <Text color={'green.400'}>Esqueceu a senha?</Text>
+              <Form>
+                <FormControl id="email">
+                  <FormLabel>Email</FormLabel>
+                  <Input type="email" onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>Senha</FormLabel>
+                  <Input type="password" onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
+                </FormControl>
+                <Stack spacing={10}>
+                  <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    align={'start'}
+                    justify={'space-between'}>
+                    <Checkbox colorScheme='green'>Lembrar de mim</Checkbox>
+                    <Text color={'green.400'}>Problemas para entrar?</Text>
+                  </Stack>
+                  <Stack>
+                    <Button
+                      bg={'yellow.400'}
+                      color={'black'}
+                      width={'100%'}
+                      _hover={{
+                        bg: 'yellow.500'
+                      }}
+                      onClick={handleLogin}>
+                      Entrar
+                    </Button>
+                  </Stack>
                 </Stack>
-                <Stack>
-                <Link to = {'/Home'}><Button
-                  bg={'yellow.400'}
-                  color={'black'}
-                  width={'100%'}
-                  _hover={{
-                    bg: 'yellow.500'
-                  }}>
-                  Entrar
-                </Button></Link>
-                </Stack>
-              </Stack>
+              </Form>
             </Stack>
           </Box>
         </Stack>

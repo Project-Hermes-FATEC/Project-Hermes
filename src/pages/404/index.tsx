@@ -25,7 +25,7 @@ function NotFound(){
                     bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
                     color="white"
                     variant="solid">
-                    Voltar para Home
+                    Voltar
                 </Button>
             </Link>
         </Box>
