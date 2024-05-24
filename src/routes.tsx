@@ -6,6 +6,7 @@ import Sobre from "./pages/sobre";
 import VerificaProduto from "./pages/sales/product-verify";
 import ListaVendas from "./pages/sales/sales-list";
 import api from "./pages/helpers/axios";
+import ListaUser from "./pages/admin/lista";
 
 const ProtectedRoutes = async () => {
     let auth;
@@ -23,8 +24,8 @@ const ProtectedRoutes = async () => {
 
 const router = createBrowserRouter([
     { path: '/', element: <Navigate to='/autenticacao/login' />, errorElement: <NotFound /> },
-    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }] },
-    { path: '/admin', children: [{ path: 'lista' }] },
+    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }, { path: 'logout',  }] },
+    { path: '/admin', children: [{ path: 'listar', element: <ListaUser /> }] },
     {
         path: '/', 
         loader: ProtectedRoutes,

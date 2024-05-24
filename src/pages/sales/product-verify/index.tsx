@@ -20,8 +20,6 @@ import {
 import trator_img from '../../../assets/produtos/trator_example.png'
 import Layout from '../../../components/layout';
 
-
-
 function VerificaProduto() {
     return (
         <Layout>

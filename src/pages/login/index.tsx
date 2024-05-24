@@ -18,6 +18,7 @@ import { Form, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import api from '../helpers/axios'
 import CardMessage from '../../components/cardMessage'
+import farmWallpaper from '../../assets/backgrounds/farm-background.webp'
 
 export default function Login() {
   const [userData, setUserData] = useState({
@@ -49,7 +50,10 @@ export default function Login() {
   return (
     <Layout>
       { message && <CardMessage message={message} type='fail'/> }
-      <Flex
+      <Flex 
+        bgImage={farmWallpaper}
+        backgroundSize={"cover"}
+        backgroundRepeat={"no-repeat"}
         minH={'calc(100vh - 108px)'}
         align={'center'}
         justify={'center'}>

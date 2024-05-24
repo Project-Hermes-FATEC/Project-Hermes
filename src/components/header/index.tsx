@@ -14,37 +14,34 @@ import {
     MenuButton,
     MenuDivider,
     MenuItem,
-    MenuList
+    MenuList,
+    AvatarBadge,
+    IconButton,
 } from '@chakra-ui/react'
 
 import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import profileImg from '../../assets/members/ArthurSilva.jpg'
-import api from '../../pages/helpers/axios'
+import { handleLogout } from '../../functions/auth/logout'
+import { PiPencil } from 'react-icons/pi'
 
 interface Props {
     isAuth: boolean
 }
 
 export default function Header({ isAuth }: Props) {
-    const Links = [{ titulo: 'Página inicial', link: '/home' },
-    { titulo: 'Listar vendas', link: '/vendas/listar' },
-    { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
+    let Links = [{ titulo: '', link: '' }];
+    let adminVerify;
+
+    location.pathname.match("/admin/") ? adminVerify = true : adminVerify = false
+
+    if(!adminVerify){
+        Links = [{ titulo: 'Página inicial', link: '/home' },
+        { titulo: 'Listar vendas', link: '/vendas/listar' },
+        { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
+    }
 
     const userName = localStorage.getItem("name");
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.clear();
-
-        api.get("/auth/logout", {withCredentials: true}).then((res) => {
-            if (res.status === 204) {
-                navigate("/", { state: { message: "Você saiu da sua conta", type: "success" } });
-            }
-        }).catch(() => {
-            navigate("/")
-        })
-    }
 
     return (
         <Box>
@@ -75,13 +72,16 @@ export default function Header({ isAuth }: Props) {
 
 
                 {
-                    isAuth ?
+                    isAuth &&
                         <Stack
                             justify={'space-between'}
                             direction={'row'}>
                             <HStack spacing={8} alignItems={'center'} mr={5}>
                                 <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                                    {Links.map((link) => (
+                                    {adminVerify ? 
+                                    <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
+                                    :
+                                    Links.map((link) => (
                                         <NavLink key={link.titulo} to={link.link}>{link.titulo}</NavLink>
                                     ))}
                                 </HStack>
@@ -104,8 +104,15 @@ export default function Header({ isAuth }: Props) {
                                     <Center>
                                         <Avatar
                                             size={'2xl'}
-                                            src={profileImg}
-                                        />
+                                            src={profileImg}> 
+                                        <AvatarBadge as={IconButton}
+                                        size="md"
+                                        rounded="full"
+                                        top="-10px"
+                                        colorScheme="gray"
+                                        border={"black solid 2px"}
+                                        aria-label="remove Image" 
+                                        icon={<PiPencil />} /> </Avatar>
                                     </Center>
                                     <br />
                                     <Center>
@@ -113,35 +120,10 @@ export default function Header({ isAuth }: Props) {
                                     </Center>
                                     <br />
                                     <MenuDivider />
-                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                    <MenuItem onClick={handleLogout}>Sair</MenuItem>
                                 </MenuList>
                             </Menu>
                             <Text>{userName}</Text>
-                        </Stack>
-
-                        :
-
-                        <Stack
-                            flex={{ base: 1, md: 0 }}
-                            justify={'flex-end'}
-                            direction={'row'}
-                            spacing={6}>
-                            <Button color='black' as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-                                Entrar
-                            </Button>
-                            <Button
-                                as={'a'}
-                                display={{ base: 'none', md: 'inline-flex' }}
-                                fontSize={'sm'}
-                                fontWeight={600}
-                                color={'black'}
-                                bg={'green.400'}
-                                href={'#'}
-                                _hover={{
-                                    bg: 'green.300',
-                                }}>
-                                Registrar
-                            </Button>
                         </Stack>
                 }
             </Flex>
