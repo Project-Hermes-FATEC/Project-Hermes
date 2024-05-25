@@ -1,6 +1,6 @@
 import { Stack, Heading, List, ListItem, ListIcon, Button, useColorModeValue, Image } from "@chakra-ui/react";
 import { FaCheckCircle, FaRegCheckCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import trator_img from '../../../assets/produtos/trator_example.png'
 
 interface PackageTierProps {
@@ -43,7 +43,7 @@ export function ItemListaGenerica ({ title, title2, options, checked = false }: 
             <Image boxSize='150px' objectFit="contain" src={trator_img} alt="Tractor" />
             <Stack>
                 <Link to='/produto/verificarEntrada'>
-                    <Button
+                    <Button onClick={() => { redirect('/') }}
                         size="md"
                         color={useColorModeValue(colorTextLight, colorTextDark)}
                         bgColor={useColorModeValue(bgColorLight, bgColorDark)}>

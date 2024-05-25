@@ -1,18 +1,9 @@
 import {
   Box,
-  Button,
   Divider,
-  Heading,
   Stack,
-  Text,
-  Input,
-  InputLeftElement,
-  InputGroup,
-  Icon
 } from '@chakra-ui/react'
-import { FaSearch } from 'react-icons/fa'
 import Layout from '../../../components/layout'
-import ButtonCustom from '../../../components/button'
 import { ItemListaGenerica } from '../../../components/listaHorizontalGenerica/ItemLista'
 import CustomListSearch from '../../../components/customListSearch'
 

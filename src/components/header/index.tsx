@@ -24,18 +24,40 @@ import { NavLink } from 'react-router-dom'
 import profileImg from '../../assets/members/ArthurSilva.jpg'
 import { handleLogout } from '../../functions/auth/logout'
 import { PiPencil } from 'react-icons/pi'
+import React, { ChangeEvent, useState } from 'react'
 
 interface Props {
     isAuth: boolean
 }
 
 export default function Header({ isAuth }: Props) {
+    const [iconImage, setIconImage] = useState<string>();
+
     let Links = [{ titulo: '', link: '' }];
     let adminVerify;
 
+    function handleUpdateImage() {
+        let input = document.createElement('input');
+
+        input.type = 'file';
+        input.accept = 'image/*'
+
+        input.addEventListener('change', (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            
+            if(file){
+                const imageURL = URL.createObjectURL(file);
+                setIconImage(imageURL)
+            }
+        });
+
+        input.click();
+    }
+
+
     location.pathname.match("/admin/") ? adminVerify = true : adminVerify = false
 
-    if(!adminVerify){
+    if (!adminVerify) {
         Links = [{ titulo: 'Página inicial', link: '/home' },
         { titulo: 'Listar vendas', link: '/vendas/listar' },
         { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
@@ -70,61 +92,60 @@ export default function Header({ isAuth }: Props) {
                     </Text>
                 </Flex>
 
-
                 {
                     isAuth &&
-                        <Stack
-                            justify={'space-between'}
-                            direction={'row'}>
-                            <HStack spacing={8} alignItems={'center'} mr={5}>
-                                <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                                    {adminVerify ? 
+                    <Stack
+                        justify={'space-between'}
+                        direction={'row'}>
+                        <HStack spacing={8} alignItems={'center'} mr={5}>
+                            <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                                {adminVerify ?
                                     <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
                                     :
                                     Links.map((link) => (
                                         <NavLink key={link.titulo} to={link.link}>{link.titulo}</NavLink>
                                     ))}
-                                </HStack>
                             </HStack>
+                        </HStack>
 
-                            <Menu>
-                                <MenuButton
-                                    as={Button}
-                                    rounded={'full'}
-                                    variant={'link'}
-                                    cursor={'pointer'}
-                                    minW={0}>
+                        <Menu>
+                            <MenuButton
+                                as={Button}
+                                rounded={'full'}
+                                variant={'link'}
+                                cursor={'pointer'}
+                                minW={0}>
+                                <Avatar
+                                    size={'sm'}
+                                    src={iconImage}
+                                />
+                            </MenuButton>
+                            <MenuList alignItems={'center'}>
+                                <br />
+                                <Center>
                                     <Avatar
-                                        size={'sm'}
-                                        src={profileImg}
-                                    />
-                                </MenuButton>
-                                <MenuList alignItems={'center'}>
-                                    <br />
-                                    <Center>
-                                        <Avatar
-                                            size={'2xl'}
-                                            src={profileImg}> 
+                                        size={'2xl'}
+                                        src={iconImage}>
                                         <AvatarBadge as={IconButton}
-                                        size="md"
-                                        rounded="full"
-                                        top="-10px"
-                                        colorScheme="gray"
-                                        border={"black solid 2px"}
-                                        aria-label="remove Image" 
-                                        icon={<PiPencil />} /> </Avatar>
-                                    </Center>
-                                    <br />
-                                    <Center>
-                                        <p>{userName}</p>
-                                    </Center>
-                                    <br />
-                                    <MenuDivider />
-                                    <MenuItem onClick={handleLogout}>Sair</MenuItem>
-                                </MenuList>
-                            </Menu>
-                            <Text>{userName}</Text>
-                        </Stack>
+                                            size="md"
+                                            rounded="full"
+                                            top="-10px"
+                                            colorScheme="gray"
+                                            border={"black solid 2px"}
+                                            onClick={handleUpdateImage}
+                                            icon={<PiPencil />} /> </Avatar>
+                                </Center>
+                                <br />
+                                <Center>
+                                    <p>{userName}</p>
+                                </Center>
+                                <br />
+                                <MenuDivider />
+                                <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                            </MenuList>
+                        </Menu>
+                        <Text>{userName}</Text>
+                    </Stack>
                 }
             </Flex>
         </Box>

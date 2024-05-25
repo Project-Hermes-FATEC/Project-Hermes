@@ -3,14 +3,13 @@ import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
 import Sobre from "./pages/sobre";
-import VerificaProduto from "./pages/sales/product-verify";
+import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
 import api from "./pages/helpers/axios";
 import ListaUser from "./pages/admin/lista";
 
 const ProtectedRoutes = async () => {
     let auth;
-
     await api.get("/auth/verify", {withCredentials: true}).then(() => {
         auth = true;
     }).catch((e) => {
@@ -33,7 +32,8 @@ const router = createBrowserRouter([
             [
                 { path: '/home', element: <Home /> },
                 { path: '/sobre', element: <Sobre /> },
-                { path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> }, { path: 'listar', element: <ListaVendas /> }] }
+                { path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> }, 
+                                              { path: 'listar', element: <ListaVendas /> }] }
             ]        
     },
 
