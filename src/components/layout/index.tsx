@@ -1,5 +1,5 @@
 import Header from "../../components/header"
-import { Card, Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
+import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
 import Footer from "../footer"
 import { useLocation } from "react-router-dom"
 import CardMessage from "../cardMessage"
