@@ -21,10 +21,9 @@ import {
 
 import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
 import { NavLink } from 'react-router-dom'
-import profileImg from '../../assets/members/ArthurSilva.jpg'
 import { handleLogout } from '../../functions/auth/logout'
 import { PiPencil } from 'react-icons/pi'
-import React, { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
 
 interface Props {
     isAuth: boolean
