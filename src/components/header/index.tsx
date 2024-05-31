@@ -8,25 +8,63 @@ import {
     useBreakpointValue,
     Image,
     HStack,
-    Avatar
+    Avatar,
+    Menu,
+    Center,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    AvatarBadge,
+    IconButton,
 } from '@chakra-ui/react'
 
-import logo_cervo_jd from '../../assets/John-Deere-Logo-Cervo.png'
-import { NavLink, useLocation } from 'react-router-dom'
+import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
+import { NavLink } from 'react-router-dom'
+import profileImg from '../../assets/members/ArthurSilva.jpg'
+import { handleLogout } from '../../functions/auth/logout'
+import { PiPencil } from 'react-icons/pi'
+import React, { ChangeEvent, useState } from 'react'
 
-const Links = [{ titulo: 'Página inicial', link: '/home' },
-{ titulo: 'Listar vendas', link: '/produto/listaVendas' },
-{ titulo: 'Registar venda', link: '/produto/verificarEntrada' }];
-
-function fakeAuth(){
-    if(useLocation().pathname.match('login')){
-        return false;
-    } else {
-        return true;
-    }
+interface Props {
+    isAuth: boolean
 }
 
-export default function Header() {
+export default function Header({ isAuth }: Props) {
+    const [iconImage, setIconImage] = useState<string>();
+
+    let Links = [{ titulo: '', link: '' }];
+    let adminVerify;
+
+    function handleUpdateImage() {
+        let input = document.createElement('input');
+
+        input.type = 'file';
+        input.accept = 'image/*'
+
+        input.addEventListener('change', (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            
+            if(file){
+                const imageURL = URL.createObjectURL(file);
+                setIconImage(imageURL)
+            }
+        });
+
+        input.click();
+    }
+
+
+    location.pathname.match("/admin/") ? adminVerify = true : adminVerify = false
+
+    if (!adminVerify) {
+        Links = [{ titulo: 'Página inicial', link: '/home' },
+        { titulo: 'Listar vendas', link: '/vendas/listar' },
+        { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
+    }
+
+    const userName = localStorage.getItem("name");
+
     return (
         <Box>
             <Flex
@@ -54,52 +92,60 @@ export default function Header() {
                     </Text>
                 </Flex>
 
-
                 {
-                    fakeAuth() ?
-                        <Stack 
+                    isAuth &&
+                    <Stack
                         justify={'space-between'}
                         direction={'row'}>
-                            <HStack spacing={8} alignItems={'center'} mr={5}>
-                                <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                                    {Links.map((link) => (
+                        <HStack spacing={8} alignItems={'center'} mr={5}>
+                            <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                                {adminVerify ?
+                                    <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
+                                    :
+                                    Links.map((link) => (
                                         <NavLink key={link.titulo} to={link.link}>{link.titulo}</NavLink>
                                     ))}
-                                </HStack>
                             </HStack>
+                        </HStack>
 
-                            <Avatar
-                                size={'sm'}
-                                src={
-                                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                                }
-                            />
-                        </Stack>
-
-                        :
-
-                        <Stack
-                            flex={{ base: 1, md: 0 }}
-                            justify={'flex-end'}
-                            direction={'row'}
-                            spacing={6}>
-                            <Button color='black' as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-                                Entrar
-                            </Button>
-                            <Button
-                                as={'a'}
-                                display={{ base: 'none', md: 'inline-flex' }}
-                                fontSize={'sm'}
-                                fontWeight={600}
-                                color={'black'}
-                                bg={'green.400'}
-                                href={'#'}
-                                _hover={{
-                                    bg: 'green.300',
-                                }}>
-                                Registrar
-                            </Button>
-                        </Stack>
+                        <Menu>
+                            <MenuButton
+                                as={Button}
+                                rounded={'full'}
+                                variant={'link'}
+                                cursor={'pointer'}
+                                minW={0}>
+                                <Avatar
+                                    size={'sm'}
+                                    src={iconImage}
+                                />
+                            </MenuButton>
+                            <MenuList alignItems={'center'}>
+                                <br />
+                                <Center>
+                                    <Avatar
+                                        size={'2xl'}
+                                        src={iconImage}>
+                                        <AvatarBadge as={IconButton}
+                                            size="md"
+                                            rounded="full"
+                                            top="-10px"
+                                            colorScheme="gray"
+                                            border={"black solid 2px"}
+                                            onClick={handleUpdateImage}
+                                            icon={<PiPencil />} /> </Avatar>
+                                </Center>
+                                <br />
+                                <Center>
+                                    <p>{userName}</p>
+                                </Center>
+                                <br />
+                                <MenuDivider />
+                                <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                            </MenuList>
+                        </Menu>
+                        <Text>{userName}</Text>
+                    </Stack>
                 }
             </Flex>
         </Box>

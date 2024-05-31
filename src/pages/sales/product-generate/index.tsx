@@ -9,18 +9,11 @@ import {
     Image,
     Input,
     Select,
-    Table,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
 } from '@chakra-ui/react';
 
-import trator_img from '../../../assets/trator_example.png'
+import trator_img from '../../../assets/produtos/trator_example.png'
 import Layout from '../../../components/layout';
-
-
+import TableVerify from '../../../components/salesPage/productVerify/tableVerify';
 
 function VerificaProduto() {
     return (
@@ -50,35 +43,10 @@ function VerificaProduto() {
                     </Grid>
                 </Center>
                 <Center mt={5} bg="white" p={5} rounded="md" boxShadow="md">
-                    <Table variant="simple">
-                        <Thead>
-                            <Tr>
-                                <Th>Tarefas / Pontos de Verificação</Th>
-                                <Th>Comentários</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            <Tr>
-                                <Td>Verificar pontos A-C</Td>
-                                <Td><Button colorScheme="purple" size="sm">Verificado</Button></Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Verificar pontos D-F</Td>
-                                <Td><Button colorScheme="purple" size="sm">Verificado</Button></Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Verificar pontos G-I</Td>
-                                <Td><Button colorScheme="purple" size="sm">Verificado</Button></Td>
-                            </Tr>
-                            <Tr>
-                                <Td>Verificar pontos J-L</Td>
-                                <Td><Button colorScheme="purple" size="sm">Verificado</Button></Td>
-                            </Tr>
-                        </Tbody>
-                    </Table>
+                    <TableVerify />
                 </Center>
                 <Center mt={5}>
-                    <Button colorScheme="yellow" size="lg">Emitir resultados</Button>
+                    <Button colorScheme="yellow" size="lg">Gerar</Button>
                 </Center>
             </Box>
         </Layout>

@@ -21,16 +21,16 @@ function Home() {
           </Text>
           <VStack spacing={4} align="stretch">
           <Tooltip hasArrow label="Verificar vendas, detalhes de venda e acesso aos checklists." bg="green.400" placement='right' fontSize='medium'>
-              <Link to={'/produto/listaVendas'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Lista de vendas</Button></Link>
+              <Link to={'/vendas/listar'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Lista de vendas</Button></Link>
             </Tooltip>
             <Tooltip hasArrow label="Inserção de uma nova venda para que ela seja verificada e registrada." bg="green.400" placement='right' fontSize='medium'>
-              <Link to={'/produto/verificarEntrada'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Criar verificação</Button></Link>
+              <Link to={'/vendas/cadastrar'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Criar verificação</Button></Link>
             </Tooltip>
             <Tooltip hasArrow label="Conhecer os membros responsáveis pelo projeto." bg="green.400" placement='right' fontSize='medium'>
               <Link to={'/Sobre'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Equipe Hermes</Button></Link>
             </Tooltip>
             <Tooltip hasArrow label="Fazer Logout e voltar a página de Login." bg="green.400" placement='right' fontSize='medium'>
-              <Link to="/login"><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Sair</Button></Link>
+              <Link to="/autenticacao/login"><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Sair</Button></Link>
             </Tooltip>
           </VStack>
         </Box>

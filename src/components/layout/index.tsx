@@ -1,6 +1,8 @@
 import Header from "../../components/header"
-import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
+import { Card, Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
 import Footer from "../footer"
+import { useLocation } from "react-router-dom"
+import CardMessage from "../cardMessage"
 
 interface Props {
     children: React.ReactNode
@@ -8,7 +10,17 @@ interface Props {
 
 function Layout(props: Props) {
     const { children } = props
+    const location = useLocation();
 
+    const isAuth = () => {
+        return location.pathname.match('/login') ? false : true;
+    }
+     
+    let message = '';
+    if(location.state){
+        message = location.state.message
+    }
+    
     return (
         <Grid 
         templateColumns={'1fr'} 
@@ -17,7 +29,8 @@ function Layout(props: Props) {
         backgroundSize={'cover'}
         minH={'100vh'}>
             <GridItem colSpan={1} rowSpan={1}>
-                <Header />
+                <Header isAuth={isAuth()} />
+                { message && <CardMessage message="Login realizado com sucesso!" type={location.state.type} /> }
             </GridItem>
             <GridItem colSpan={1} rowSpan={1}>
                 {children}
