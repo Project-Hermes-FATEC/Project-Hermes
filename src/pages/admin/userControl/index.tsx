@@ -26,7 +26,7 @@ function ListaUser() {
 
     return (
         <Layout>
-            <ModalCreateUser isOpen={isOpen} onClose={onClose}/>
+            <ModalCreateUser isOpen={isOpen} onClose={onClose} loadUsers={loadUsers} />
 
             <CustomListSearch title='Lista de'
                 title_sub='Usuários'
@@ -38,7 +38,7 @@ function ListaUser() {
                         Cadastrar usuário
                     </Button>
                 ]} />
-            {<Acordion content={listUsers} />}
+            {<Acordion content={listUsers} refreshUser={loadUsers} />}
         </Layout>
     )
 }

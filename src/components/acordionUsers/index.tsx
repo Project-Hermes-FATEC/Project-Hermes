@@ -21,9 +21,10 @@ import api from '../../pages/helpers/axios';
 
 interface Props {
     content: Array<UserProps>
+    refreshUser() : void
 }
 
-export default function Acordion({ content }: Props) {
+export default function Acordion({ content, refreshUser }: Props) {
     const [user, setUser] = useState<UserProps | null>();
     const toast = toastHandle();
 
@@ -40,6 +41,7 @@ export default function Acordion({ content }: Props) {
             toast({ title: "Não foi possível atualizar informações", status: 'error'});
         });
 
+        refreshUser();
         setUser(null);
     }
 
@@ -48,7 +50,9 @@ export default function Acordion({ content }: Props) {
             if(res.status === 200) toast({ title: "Senha resetada com sucesso!", status: 'success'});
         }).catch(e => {
             toast({ title: "Não foi possível resetar a senha", status: 'error'});
-        })
+        });
+
+        refreshUser();
     }
 
     return (
@@ -62,7 +66,7 @@ export default function Acordion({ content }: Props) {
                         content.map((user) => (
                             <AccordionItem>
                                 <AccordionButton _expanded={{ bg: 'green.300' }} 
-                                    onClick={() => { setUser(null); }}
+                                    onClick={() => { setUser(null); refreshUser();}}
                                     display="grid"
                                     alignItems="center"
                                     gridTemplateColumns={"25% 25% 25% 25%"}
@@ -94,7 +98,6 @@ export default function Acordion({ content }: Props) {
                                     <Box m="20px" display="flex" justifyContent="space-around">
                                         <Button onClick={() => resetPassword(user.id)}>Resetar senha</Button>
                                         <Button onClick={() => updateUser(user.id)}>Atualizar</Button>
-                                        <Button>Excluir</Button>
                                     </Box>
                                 </AccordionPanel>
                             </AccordionItem>

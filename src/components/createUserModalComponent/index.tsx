@@ -1,20 +1,23 @@
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select, InputRightElement, InputGroup } from "@chakra-ui/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import toastHandle from "../toast";
 import api from "../../pages/helpers/axios";
 
 interface Props {
     isOpen: boolean
     onClose(): void
+    loadUsers(): void
 }
 
-function ModalCreateUser({ isOpen, onClose }: Props) {
+function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
     const emptyUser = { email: "", name: "", id: 0, type: "", userId: "", phone: "" };
     const [user, setUser] = useState<UserProps>(emptyUser);
     const [password, setPassword] = useState('JohnDeere2023');
     const [show, setShow] = React.useState(false)
     const initialRef = React.useRef(null)
     const toast = toastHandle();
+
+    useEffect(() => {loadUsers();});
 
     async function createUser() {
         if (!user.email || !user.name || !user.type || !password || !user.userId) return toast({ title: 'Preencha todos os campos necessários', status: 'error' });
@@ -29,7 +32,6 @@ function ModalCreateUser({ isOpen, onClose }: Props) {
             }
         }).catch(error => {
             toast({ title: 'Erro ao cadastrar usuário!', status: 'error', description: error.response.data.error });
-
         });
     }
 
