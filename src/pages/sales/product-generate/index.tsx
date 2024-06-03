@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 
 import trator_img from '../../../assets/produtos/trator_example.png'
-import Layout from '../../../components/layout';
+import Layout from '../../../components/defaultLayout/layout';
 import TableVerify from '../../../components/salesPage/productVerify/tableVerify';
 
 function VerificaProduto() {

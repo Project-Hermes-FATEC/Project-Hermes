@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Text, Tooltip, VStack, useColorModeValue } from "@chakra-ui/react"
-import Layout from "../../components/layout"
+import Layout from "../../components/defaultLayout/layout"
 import { Link } from 'react-router-dom'
 
 function Home() {

@@ -27,30 +27,28 @@ export default function Acordion({ content }: Props) {
             <Container minH={'full'} minW={'full'}>
                 <Accordion allowToggle minW={'full'} minH={'full'} rounded="lg">
                     {
-                        content.map((each) => (
+                        content.map((user) => (
                             <AccordionItem>
                                 <AccordionButton _expanded={{ bg: 'green.100' }}
-                                    display="flex"
+                                    display="grid"
                                     alignItems="center"
-                                    justifyContent="space-between"
+                                    gridTemplateColumns={"25% 25% 25% 25%"}
                                     p={4}>
-                                    <Text fontSize="md">{each.userId}</Text>
-                                    <Text fontSize="md">{each.name}</Text>
-                                    <Text fontSize="md">{each.email}</Text>
+                                    <Text fontSize="md">{user.userId}</Text>
+                                    <Text fontSize="md">{user.name}</Text>
+                                    <Text fontSize="md">{user.email}</Text>
                                     <AccordionIcon />
                                 </AccordionButton>
                                 <AccordionPanel pb={4} bgColor={'wheat'}>
                                     <Text display={"flex"} justifyContent={"space-between"}>
                                         <Box p='7px'>
                                             E-mail
-                                            <Input defaultValue={each.email} bgColor={"white"} width={"fit-content"} colorScheme='green' />
+                                            <Input defaultValue={user.email} bgColor={"white"} width={"fit-content"} colorScheme='green' />
                                         </Box>
-                                        {each.telefone?.map((phone) => (
-                                            <Box p='3px'>
-                                                Telefone
-                                                <Input defaultValue={phone} bgColor={"white"} width={"fit-content"} />
-                                            </Box>
-                                        ))}
+                                        <Box p='3px'>
+                                            Telefone
+                                            <Input defaultValue={user.phone} bgColor={"white"} width={"fit-content"} />
+                                        </Box>
                                         <Checkbox colorScheme='green'>Admin</Checkbox>
                                     </Text>
                                     <Box m="10px" display="flex" justifyContent="space-evenly">

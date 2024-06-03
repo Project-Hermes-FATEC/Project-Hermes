@@ -3,7 +3,7 @@ import {
   Divider,
   Stack,
 } from '@chakra-ui/react'
-import Layout from '../../../components/layout'
+import Layout from '../../../components/defaultLayout/layout'
 import { ItemListaGenerica } from '../../../components/listaHorizontalGenerica/ItemLista'
 import CustomListSearch from '../../../components/customListSearch'
 

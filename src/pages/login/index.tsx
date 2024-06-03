@@ -13,44 +13,45 @@ import {
 } from '@chakra-ui/react'
 
 import logo from '../../assets/icons/logo.png'
-import Layout from '../../components/layout'
+import Layout from '../../components/defaultLayout/layout'
 import { Form, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import api from '../helpers/axios'
-import CardMessage from '../../components/cardMessage'
 import farmWallpaper from '../../assets/backgrounds/farm-background.webp'
+import toastHandle from '../../components/toast'
 
 export default function Login() {
+  const navigate = useNavigate();
+  const toast = toastHandle();
+
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   });
-  const [message, setMessage] = useState<string>();
-  const navigate = useNavigate();
 
   async function handleLogin() {
-    setMessage("");
+    if(!userData.email || !userData.password) return toast({ title: 'Preencha todos os campos', status: 'error' });
 
-    await api.post('/auth/login', userData, {withCredentials: true})
+    await api.post('/auth/login', userData, { withCredentials: true })
       .then((resposta) => {
         if (resposta.status === 200) {
           localStorage.setItem("name", resposta.data.name);
           localStorage.setItem("email", resposta.data.email);
+          localStorage.setItem("type", resposta.data.type);
 
-          navigate("/home", {state: {message: "Login realizado com sucesso!", type: "success"}});
-        } else {
-          alert(resposta);
+          toast({ title: 'Login efetuado com sucesso!', status: 'success' });
+
+          navigate("/home");
         }
       }).catch((err) => {
+        toast({ title: "Email ou senha incorretos!", status: 'error' });
         console.log(err);
-        setMessage("Usuário ou senha inválidos");
       });
-    }
+  }
 
   return (
     <Layout>
-      { message && <CardMessage message={message} type='fail'/> }
-      <Flex 
+      <Flex
         bgImage={farmWallpaper}
         backgroundSize={"cover"}
         backgroundRepeat={"no-repeat"}
@@ -73,11 +74,11 @@ export default function Login() {
               <Form>
                 <FormControl id="email">
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
+                  <Input type="email" required={true} onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
                 </FormControl>
                 <FormControl id="password">
                   <FormLabel>Senha</FormLabel>
-                  <Input type="password" onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
+                  <Input type="password" required={true} onChange={(e) => setUserData({ ...userData, password: e.target.value })} />
                 </FormControl>
                 <Stack spacing={10}>
                   <Stack

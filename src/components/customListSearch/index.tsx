@@ -1,12 +1,12 @@
 import { Stack, Heading, InputGroup, InputLeftElement, Button, Icon, Input, Text } from "@chakra-ui/react"
 import { FaSearch } from "react-icons/fa"
-import ButtonCustom from "../button"
+import { ReactElement } from "react"
 
 interface Props {
     title: string
     title_sub: string
     placeHolder: string
-    buttons?: Array<string>
+    buttons?: Array<ReactElement>
 }
 
 function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
@@ -48,7 +48,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               </InputGroup>
               {
                 buttons?.map((button) => (
-                    <ButtonCustom title={button} />
+                    button
                 ))
               }
             </Stack>

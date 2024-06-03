@@ -1,8 +1,8 @@
-import Acordion from "../../components/acordionUsers";
-import CustomListSearch from "../../components/customListSearch";
-import Layout from "../../components/layout";
+import Acordion from "../../../components/acordionUsers";
+import CustomListSearch from "../../../components/customListSearch";
+import Layout from "../../../components/defaultLayout/layout";
 
-function ListaUser() {
+function ListaProduto() {
 
     const users = [ { userId: 'ABC123', name: 'Carlos', email: 'carlos@email'},
                     { userId: 'DEF456', name: 'Arthur', email: 'arthur@email'},
@@ -18,4 +18,4 @@ function ListaUser() {
     )
 }
 
-export default ListaUser;
+export default ListaProduto;

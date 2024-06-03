@@ -1,7 +1,6 @@
-
 import { Box, Button, Flex, Heading, VStack, Text, useColorModeValue, Tooltip, Image } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import Layout from "../../components/layout";
+import Layout from "../../components/defaultLayout/layout";
 import Anneteste from "../../assets/members/Anneteste.jpg"
 import CarlosFiori from "../../assets/members/CarlosFiori.jpg"
 import ArthurSilva from "../../assets/members/ArthurSilva.jpg"

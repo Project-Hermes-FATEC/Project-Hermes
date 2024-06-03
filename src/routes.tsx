@@ -6,11 +6,14 @@ import Sobre from "./pages/sobre";
 import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
 import api from "./pages/helpers/axios";
-import ListaUser from "./pages/admin/lista";
+import ListaUser from "./pages/admin/userControl";
+import BeginVerify from "./pages/sales/product-verify/begin-verify";
+import EndVerify from "./pages/sales/product-verify/end-verify";
 
 const ProtectedRoutes = async () => {
     let auth;
-    await api.get("/auth/verify", {withCredentials: true}).then(() => {
+
+    await api.get("/auth/verify", { withCredentials: true }).then(() => {
         auth = true;
     }).catch((e) => {
         auth = false;
@@ -21,20 +24,44 @@ const ProtectedRoutes = async () => {
     return auth ? null : redirect("/");
 }
 
+const ProtectedAdminRoutes = async () => {
+    let auth = false;
+    
+    await api.get("/auth/verify", { withCredentials: true }).then((res) => {
+        if(res.data === 'admin') return auth = true;
+    }).catch((e) => {
+        auth = false;
+        console.log(e);
+        localStorage.clear();
+    });
+
+    return auth ? null : redirect("/home");
+}
+
 const router = createBrowserRouter([
     { path: '/', element: <Navigate to='/autenticacao/login' />, errorElement: <NotFound /> },
-    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }, { path: 'logout',  }] },
-    { path: '/admin', children: [{ path: 'listar', element: <ListaUser /> }] },
+    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }, { path: 'logout', }] },
     {
-        path: '/', 
+        path: '/admin',
+        loader: ProtectedAdminRoutes,
+        children: [{ path: 'users', element: <ListaUser /> }]
+    },
+    {
+        path: '/',
         loader: ProtectedRoutes,
         children:
             [
                 { path: '/home', element: <Home /> },
                 { path: '/sobre', element: <Sobre /> },
-                { path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> }, 
-                                              { path: 'listar', element: <ListaVendas /> }] }
-            ]        
+                {
+                    path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> },
+                    { path: 'listar', element: <ListaVendas /> },
+                    {
+                        path: 'verificar', element: <ListaVendas />, children: [{ path: 'saida', element: <BeginVerify /> },
+                        { path: 'chegada', element: <EndVerify /> }]
+                    }]
+                }
+            ]
     },
 
 ])

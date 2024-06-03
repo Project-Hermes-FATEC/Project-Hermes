@@ -19,12 +19,12 @@ import {
     IconButton,
 } from '@chakra-ui/react'
 
-import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink } from 'react-router-dom'
-import profileImg from '../../assets/members/ArthurSilva.jpg'
-import { handleLogout } from '../../functions/auth/logout'
+import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
-import React, { ChangeEvent, useState } from 'react'
+import { useState } from 'react'
+import api from '../../../pages/helpers/axios'
+import toastHandle from '../../toast'
 
 interface Props {
     isAuth: boolean
@@ -32,9 +32,28 @@ interface Props {
 
 export default function Header({ isAuth }: Props) {
     const [iconImage, setIconImage] = useState<string>();
+    const toast = toastHandle();
+    const navigate = useNavigate()
+
+    const name = localStorage.getItem("name");
+    const email = localStorage.getItem("email");
+    const type = localStorage.getItem("type");;
 
     let Links = [{ titulo: '', link: '' }];
     let adminVerify;
+
+    function handleLogout() {
+        api.get("/auth/logout", { withCredentials: true }).then(res => {
+            if (res.status === 204) {
+                localStorage.clear();
+                toast({ title: "Você saiu da sua conta", status: "success" });
+                navigate('/home');
+            }
+        }).catch((e) => {
+            toast({ title: "Erro ao sair da conta", status: "error" });
+            navigate('/home');
+        });
+    }
 
     function handleUpdateImage() {
         let input = document.createElement('input');
@@ -44,8 +63,8 @@ export default function Header({ isAuth }: Props) {
 
         input.addEventListener('change', (e) => {
             const file = (e.target as HTMLInputElement).files?.[0];
-            
-            if(file){
+
+            if (file) {
                 const imageURL = URL.createObjectURL(file);
                 setIconImage(imageURL)
             }
@@ -54,16 +73,15 @@ export default function Header({ isAuth }: Props) {
         input.click();
     }
 
-
-    location.pathname.match("/admin/") ? adminVerify = true : adminVerify = false
-
     if (!adminVerify) {
         Links = [{ titulo: 'Página inicial', link: '/home' },
         { titulo: 'Listar vendas', link: '/vendas/listar' },
         { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
-    }
 
-    const userName = localStorage.getItem("name");
+        if (type === 'admin') {
+            Links.push({ titulo: 'Usuários', link: '/admin/users' });
+        }
+    }
 
     return (
         <Box>
@@ -137,14 +155,16 @@ export default function Header({ isAuth }: Props) {
                                 </Center>
                                 <br />
                                 <Center>
-                                    <p>{userName}</p>
+                                    <p>{name}</p>
+                                    <p>{email}</p>
+                                    <p>{type}</p>
                                 </Center>
                                 <br />
                                 <MenuDivider />
                                 <MenuItem onClick={handleLogout}>Sair</MenuItem>
                             </MenuList>
                         </Menu>
-                        <Text>{userName}</Text>
+                        <Text>{name}</Text>
                     </Stack>
                 }
             </Flex>

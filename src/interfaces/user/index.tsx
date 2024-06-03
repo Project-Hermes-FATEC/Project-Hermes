@@ -1,6 +1,9 @@
 interface UserProps{
+    id: number
     userId: string
     name: string
     email: string
-    telefone?: Array<string>
+    phone?: string
+    type: string
 }
+
