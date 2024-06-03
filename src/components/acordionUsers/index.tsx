@@ -9,16 +9,48 @@ import {
     Container,
     AccordionIcon,
     Input,
-    Checkbox,
     Box,
+    Button,
+    Select,
+    FormLabel,
+    FormControl,
 } from '@chakra-ui/react'
-import ButtonCustom from '../button'
+import { useState } from 'react'
+import toastHandle from '../toast';
+import api from '../../pages/helpers/axios';
 
 interface Props {
     content: Array<UserProps>
 }
 
 export default function Acordion({ content }: Props) {
+    const [user, setUser] = useState<UserProps | null>();
+    const toast = toastHandle();
+
+    content = content.filter(user => (user.email !== localStorage.getItem("email")));
+
+    function updateUser(id: number) {
+        if (!user) return toast({ title: "Preencha pelo menos um campo", status: 'error' });
+
+        api.put(`/user/${id}`, user, {withCredentials: true}).then( res => {
+            if(res.status === 200){
+                toast({ title: "Informações do usuário atualizadas!", status: 'success'});
+            }
+        }).catch(e => {
+            toast({ title: "Não foi possível atualizar informações", status: 'error'});
+        });
+
+        setUser(null);
+    }
+
+    function resetPassword(id: number){
+        api.get(`/user/resetPass/${id}`, { withCredentials: true }).then(res => {
+            if(res.status === 200) toast({ title: "Senha resetada com sucesso!", status: 'success'});
+        }).catch(e => {
+            toast({ title: "Não foi possível resetar a senha", status: 'error'});
+        })
+    }
+
     return (
         <Flex
             align={'center'}
@@ -29,31 +61,40 @@ export default function Acordion({ content }: Props) {
                     {
                         content.map((user) => (
                             <AccordionItem>
-                                <AccordionButton _expanded={{ bg: 'green.100' }}
+                                <AccordionButton _expanded={{ bg: 'green.300' }} 
+                                    onClick={() => { setUser(null); }}
                                     display="grid"
                                     alignItems="center"
                                     gridTemplateColumns={"25% 25% 25% 25%"}
-                                    p={4}>
+                                    p={4} >
                                     <Text fontSize="md">{user.userId}</Text>
                                     <Text fontSize="md">{user.name}</Text>
                                     <Text fontSize="md">{user.email}</Text>
                                     <AccordionIcon />
                                 </AccordionButton>
-                                <AccordionPanel pb={4} bgColor={'wheat'}>
-                                    <Text display={"flex"} justifyContent={"space-between"}>
-                                        <Box p='7px'>
-                                            E-mail
-                                            <Input defaultValue={user.email} bgColor={"white"} width={"fit-content"} colorScheme='green' />
-                                        </Box>
-                                        <Box p='3px'>
-                                            Telefone
-                                            <Input defaultValue={user.phone} bgColor={"white"} width={"fit-content"} />
-                                        </Box>
-                                        <Checkbox colorScheme='green'>Admin</Checkbox>
-                                    </Text>
-                                    <Box m="10px" display="flex" justifyContent="space-evenly">
-                                        <ButtonCustom title='Atualizar' />
-                                        <ButtonCustom title='Excluir' />
+                                <AccordionPanel pb={4} bgColor={useColorModeValue('yellow.500', 'wheat.600')}>
+                                    <Box display={"flex"}>
+                                        <FormControl>
+                                            <FormLabel>E-mail</FormLabel>
+                                            <Input defaultValue={user.email} bgColor={"white"} width={"fit-content"} onChange={(e) => setUser({ ...user, email: e.target.value })} colorScheme='green' />
+                                        </FormControl>
+                                        <FormControl>
+                                            <FormLabel>Telefone</FormLabel>
+                                            <Input defaultValue={user.phone} bgColor={"white"} width={"fit-content"} onChange={(e) => setUser({ ...user, phone: e.target.value })} />
+                                        </FormControl>
+                                        <FormControl maxW={'fit-content'}>
+                                            <FormLabel>Permissões do usuário</FormLabel>
+                                            <Select background={"white"} defaultValue={user.type || 'User'} onChange={(e) => setUser({ ...user, type: e.target.value })}>
+                                                <option>Admin</option>
+                                                <option>User</option>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box m="20px" display="flex" justifyContent="space-around">
+                                        <Button onClick={() => resetPassword(user.id)}>Resetar senha</Button>
+                                        <Button onClick={() => updateUser(user.id)}>Atualizar</Button>
+                                        <Button>Excluir</Button>
                                     </Box>
                                 </AccordionPanel>
                             </AccordionItem>
