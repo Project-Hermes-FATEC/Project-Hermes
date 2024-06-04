@@ -4,9 +4,9 @@ import { Link, redirect } from "react-router-dom";
 import trator_img from '../../../assets/produtos/trator_example.png'
 
 interface PackageTierProps {
-    title: string
+    title?: string
     options: Array<{ id: number; desc: string }>
-    title2: string
+    title2?: string
     checked?: boolean
 }
 

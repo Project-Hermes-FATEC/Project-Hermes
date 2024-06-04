@@ -47,12 +47,11 @@ export default function Header({ isAuth }: Props) {
             if (res.status === 204) {
                 localStorage.clear();
                 toast({ title: "Você saiu da sua conta", status: "success" });
-                navigate('/home');
             }
         }).catch((e) => {
             toast({ title: "Erro ao sair da conta", status: "error" });
-            navigate('/home');
         });
+        navigate('/');
     }
 
     function handleUpdateImage() {

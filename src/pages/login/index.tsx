@@ -30,9 +30,11 @@ export default function Login() {
   });
 
   async function handleLogin() {
-    if(!userData.email || !userData.password) return toast({ title: 'Preencha todos os campos', status: 'error' });
+    if (!userData.email || !userData.password) return toast({ title: 'Preencha todos os campos', status: 'error' });
 
-    await api.post('/auth/login', userData, { withCredentials: true })
+
+
+    api.post('/auth/login', userData, { withCredentials: true })
       .then((resposta) => {
         if (resposta.status === 200) {
           localStorage.setItem("name", resposta.data.name);

@@ -1,7 +1,7 @@
 import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select, InputRightElement, InputGroup } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
-import toastHandle from "../toast";
-import api from "../../pages/helpers/axios";
+import toastHandle from "../../toast";
+import api from "../../../pages/helpers/axios";
 
 interface Props {
     isOpen: boolean
@@ -17,7 +17,7 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
     const initialRef = React.useRef(null)
     const toast = toastHandle();
 
-    useEffect(() => {loadUsers();});
+    useEffect(() => {loadUsers()}, [isOpen]);
 
     async function createUser() {
         if (!user.email || !user.name || !user.type || !password || !user.userId) return toast({ title: 'Preencha todos os campos necessários', status: 'error' });
