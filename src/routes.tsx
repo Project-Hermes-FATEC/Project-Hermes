@@ -2,7 +2,7 @@ import { Navigate, createBrowserRouter, redirect } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
-import Sobre from "./pages/sobre";
+import About from "./pages/about";
 import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
 import api from "./pages/helpers/axios";
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
         children:
             [
                 { path: 'home', element: <Home /> },
-                { path: 'sobre', element: <Sobre /> },
+                { path: 'sobre', element: <About /> },
                 {
                     path: 'vendas', children: [
                         { path: 'cadastrar', element: <VerificaProduto /> },
