@@ -166,11 +166,11 @@ export default function Header({ isAuth }: Props) {
                                             icon={<PiPencil />} /> </Avatar>
                                 </Center>
                                 <br />
-                                <Center>
+                                <Box display={'grid'} justifyContent={'center'} alignContent={'center'}>
                                     <p>{name}</p>
                                     <p>{email}</p>
                                     <p>{type}</p>
-                                </Center>
+                                </Box>
                                 <br />
                                 <MenuDivider />
                                 <MenuItem onClick={handleLogout}>Sair</MenuItem>
