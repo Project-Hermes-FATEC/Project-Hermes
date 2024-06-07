@@ -5,7 +5,7 @@ import Layout from "../../../components/defaultLayout/layout";
 import api from "../../helpers/axios";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
-import ModalCreateUser from "../../../components/modal/createUserModalComponent";
+import ModalCreateUser from "../../../components/modal/modalUsers";
 
 function ListaUser() {
     const [listUsers, setListUsers] = useState<UserProps[]>([]);

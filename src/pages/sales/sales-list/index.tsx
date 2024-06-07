@@ -37,7 +37,7 @@ function ListaVendas() {
 
   return (
     <Layout>
-      <ModalCreateSales isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
+      <ModalCreateSales key={'1223'} isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
       <Box py={6} px={5} width="full" bgColor={"blue.100"} >
         <Stack spacing={4} width={'100%'} direction={'column'}>
           <CustomListSearch title='Lista de' 
@@ -48,7 +48,7 @@ function ListaVendas() {
             sales.map(sell => (
               <>
                 <Divider />
-                <ItemListaGenerica title={sell.salesNumber.toString()}
+                <ItemListaGenerica key={'itemList'} title={sell.salesNumber.toString()}
                   title2={sell.product?.name}
                   checked={true}
                   options={options} />

@@ -22,9 +22,10 @@ import {
 import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import api from '../../../pages/helpers/axios'
 import toastHandle from '../../toast'
+import SimpleMenu from '../../menu'
 
 interface Props {
     isAuth: boolean
@@ -39,7 +40,7 @@ export default function Header({ isAuth }: Props) {
     const email = localStorage.getItem("email");
     const type = localStorage.getItem("type");;
 
-    let Links = [{ titulo: '', link: '' }];
+    let menuItems = [];
     let adminVerify;
 
     function handleLogout() {
@@ -72,15 +73,25 @@ export default function Header({ isAuth }: Props) {
         input.click();
     }
 
-    if (!adminVerify) {
-        Links = [{ titulo: 'Página inicial', link: '/home' },
-        { titulo: 'Listar vendas', link: '/vendas/listar' },
-        { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
-
-        if (type === 'admin') {
-            Links.push({ titulo: 'Usuários', link: '/admin/users' });
+    menuItems = [
+        {
+            title: 'Vendas', items: [
+                { value: 'Listar', link: '/vendas/listar' },
+                { value: 'Registar', link: '/vendas/cadastrar' }
+            ]
+        },
+        {
+            title: 'Produtos', items: [
+                { value: 'Listar', link: '/produto/listar' },
+                { value: 'Registar', link: '/produto/cadastrar' }
+            ]
         }
+    ];
+
+    if (type === 'admin') {
+        menuItems.push({ title: 'admin', items: [{ value: 'Usuários', link: '/admin/users' }] });
     }
+
 
     return (
         <Box>
@@ -116,12 +127,14 @@ export default function Header({ isAuth }: Props) {
                         direction={'row'}>
                         <HStack spacing={8} alignItems={'center'} mr={5}>
                             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                                <NavLink key={"Pagina inicial"} to={'/home'}><Button colorScheme='green'>{"Pagina inicial"}</Button></NavLink>
                                 {adminVerify ?
                                     <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
                                     :
-                                    Links.map((link) => (
-                                        <NavLink key={link.titulo} to={link.link}>{link.titulo}</NavLink>
-                                    ))}
+                                    menuItems.map(item => (
+                                        <SimpleMenu items={item.items} title={item.title} link={''} />
+                                    ))
+                                }
                             </HStack>
                         </HStack>
 

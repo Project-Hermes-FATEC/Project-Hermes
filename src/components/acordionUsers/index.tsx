@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function Acordion({ content, refreshUser }: Props) {
-    const [user, setUser] = useState<UserProps | null>();
+    const [user, setUser] = useState<UserProps>();
     const toast = toastHandle();
 
     content = content.filter(user => (user.email !== localStorage.getItem("email")));
@@ -42,7 +42,6 @@ export default function Acordion({ content, refreshUser }: Props) {
         });
 
         refreshUser();
-        setUser(null);
     }
 
     function resetPassword(id: number){
@@ -64,9 +63,9 @@ export default function Acordion({ content, refreshUser }: Props) {
                 <Accordion allowToggle minW={'full'} minH={'full'} rounded="lg">
                     {
                         content.map((user) => (
-                            <AccordionItem>
+                            <AccordionItem key={user.id}>
                                 <AccordionButton _expanded={{ bg: 'green.300' }} 
-                                    onClick={() => { setUser(null); refreshUser();}}
+                                    onClick={() => { refreshUser();}}
                                     display="grid"
                                     alignItems="center"
                                     gridTemplateColumns={"25% 25% 25% 25%"}

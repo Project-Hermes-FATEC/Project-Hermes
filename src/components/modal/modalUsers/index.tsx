@@ -14,7 +14,6 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
     const [user, setUser] = useState<UserProps>(emptyUser);
     const [password, setPassword] = useState('JohnDeere2023');
     const [show, setShow] = React.useState(false)
-    const initialRef = React.useRef(null)
     const toast = toastHandle();
 
     useEffect(() => {loadUsers()}, [isOpen]);
@@ -38,7 +37,6 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
     return (
         <>
             <Modal
-                initialFocusRef={initialRef}
                 isOpen={isOpen}
                 onClose={onClose}>
                 <ModalOverlay />
@@ -46,7 +44,7 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
                     <ModalHeader>Cadastrar usuário</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
-                        <FormControl isRequired={true}> <FormLabel>Nome</FormLabel> <Input ref={initialRef} placeholder='Nome' onChange={(event) => setUser({ ...user, name: event.target.value })} /> </FormControl>
+                        <FormControl isRequired={true}> <FormLabel>Nome</FormLabel> <Input placeholder='Nome' onChange={(event) => setUser({ ...user, name: event.target.value })} /> </FormControl>
 
                         <FormControl isRequired={true} mt={4}> <FormLabel>Email</FormLabel> <Input placeholder='Email' onChange={(event) => setUser({ ...user, email: event.target.value })} /> </FormControl>
 

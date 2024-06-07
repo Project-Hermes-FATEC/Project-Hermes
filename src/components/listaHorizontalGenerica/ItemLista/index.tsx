@@ -19,6 +19,7 @@ export function ItemListaGenerica ({ title, title2, options, checked = false }: 
 
     return (
         <Stack
+            key={title}
             p={3}
             py={3}
             justifyContent={{
@@ -31,11 +32,11 @@ export function ItemListaGenerica ({ title, title2, options, checked = false }: 
             }}
             alignItems={{ md: 'center' }}>
             <Heading size={'md'}>{title}</Heading>
-            <List spacing={3} textAlign="start">
-                {options.map((desc, id) => (
-                    <ListItem key={desc.id}>
-                        <ListIcon as={id === 0 ? FaCheckCircle : FaRegCheckCircle} color="green.500" />
-                        {desc.desc}
+            <List key={'salesList'} spacing={3} textAlign="start">
+                {options.map((item) => (
+                    <ListItem key={item.id} id={item.id.toString()}>
+                        <ListIcon as={item.id === 0 ? FaCheckCircle : FaRegCheckCircle} color="green.500" />
+                        {item.desc}
                     </ListItem>
                 ))}
             </List>
