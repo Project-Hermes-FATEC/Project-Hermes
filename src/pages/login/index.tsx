@@ -28,11 +28,12 @@ export default function Login() {
     email: "",
     password: ""
   });
+  const [loginLoading, setLoginLoading] = useState(false);
 
   async function handleLogin() {
     if (!userData.email || !userData.password) return toast({ title: 'Preencha todos os campos', status: 'error' });
 
-
+    setLoginLoading(true);
 
     api.post('/auth/login', userData, { withCredentials: true })
       .then((resposta) => {
@@ -48,6 +49,8 @@ export default function Login() {
       }).catch((err) => {
         toast({ title: "Email ou senha incorretos!", status: 'error' });
         console.log(err);
+      }).finally(() => {
+        setLoginLoading(false);
       });
   }
 
@@ -92,6 +95,7 @@ export default function Login() {
                   </Stack>
                   <Stack>
                     <Button
+                      isLoading={loginLoading}
                       bg={'yellow.400'}
                       color={'black'}
                       width={'100%'}

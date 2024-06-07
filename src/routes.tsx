@@ -26,9 +26,9 @@ const ProtectedRoutes = async () => {
 
 const ProtectedAdminRoutes = async () => {
     let auth = false;
-    
+
     await api.get("/auth/verify", { withCredentials: true }).then((res) => {
-        if(res.data === 'admin') return auth = true;
+        if (res.data === 'admin') return auth = true;
     }).catch((e) => {
         auth = false;
         console.log(e);
@@ -51,16 +51,24 @@ const router = createBrowserRouter([
         loader: ProtectedRoutes,
         children:
             [
-                { path: '/home', element: <Home /> },
-                { path: '/sobre', element: <Sobre /> },
+                { path: 'home', element: <Home /> },
+                { path: 'sobre', element: <Sobre /> },
                 {
-                    path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> },
-                    { path: 'listar', element: <ListaVendas /> },
-                    {
-                        path: 'verificar', element: <ListaVendas />, children: [{ path: 'saida', element: <BeginVerify /> },
-                        { path: 'chegada', element: <EndVerify /> }]
-                    }]
-                }
+                    path: 'vendas', children: [
+                        { path: 'cadastrar', element: <VerificaProduto /> },
+                        { path: 'listar', element: <ListaVendas /> },
+                        {
+                            path: 'verificar', element: <ListaVendas />, children: [
+                                { path: 'saida', element: <BeginVerify /> },
+                                { path: 'chegada', element: <EndVerify /> }]
+                        }]
+                },
+                { path: 'produto', children: [
+                    { path: 'listar', element: <></> },
+                ]},
+                { path: 'checklist', children: [
+                    { path: 'listar', element: <></> }
+                ]}
             ]
     },
 
