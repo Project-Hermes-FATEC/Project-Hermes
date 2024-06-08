@@ -76,14 +76,17 @@ export default function Header({ isAuth }: Props) {
     menuItems = [
         {
             title: 'Vendas', items: [
-                { value: 'Listar', link: '/vendas/listar' },
-                { value: 'Registar', link: '/vendas/cadastrar' }
+                { value: 'Visualizar', link: '/vendas/listar' },
             ]
         },
         {
             title: 'Produtos', items: [
-                { value: 'Listar', link: '/produto/listar' },
-                { value: 'Registar', link: '/produto/cadastrar' }
+                { value: 'Visualizar', link: '/produto/listar' },
+            ]
+        },
+        {
+            title: 'Checklist', items: [
+                { value: 'Visualizar', link: '/checklist/listar' },
             ]
         }
     ];

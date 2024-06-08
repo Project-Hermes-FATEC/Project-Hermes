@@ -12,7 +12,7 @@ interface ProductProps{
     name: string
     type: string
     description: string
-    image: Blob
+    image?: Blob
     checklist?: ChecklistProps
 }
 

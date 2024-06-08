@@ -19,7 +19,7 @@ function NotFound(){
                 A página que você está procurando parece não existir
             </Text>
 
-            <Link to={'/'}>
+            <Link to={'/home'}>
                 <Button
                     colorScheme="teal"
                     bgGradient="linear(to-r, teal.400, teal.500, teal.600)"

@@ -9,6 +9,7 @@ import api from "./pages/helpers/axios";
 import ListaUser from "./pages/admin/userControl";
 import BeginVerify from "./pages/sales/product-verify/begin-verify";
 import EndVerify from "./pages/sales/product-verify/end-verify";
+import Produto from "./pages/product";
 
 const ProtectedRoutes = async () => {
     let auth;
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
                         }]
                 },
                 { path: 'produto', children: [
-                    { path: 'listar', element: <></> },
+                    { path: 'listar', element: <Produto /> },
                 ]},
                 { path: 'checklist', children: [
                     { path: 'listar', element: <></> }

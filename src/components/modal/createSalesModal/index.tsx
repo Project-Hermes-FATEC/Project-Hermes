@@ -30,7 +30,7 @@ function ModalCreateSales({ isOpen, onClose, loadSales }: Props) {
                 onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Cadastrar usuário</ModalHeader>
+                    <ModalHeader>Cadastrar venda</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl isRequired={true}> 
