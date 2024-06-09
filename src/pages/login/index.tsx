@@ -19,15 +19,18 @@ import { useState } from 'react'
 import api from '../helpers/axios'
 import farmWallpaper from '../../assets/backgrounds/farm-background.webp'
 import toastHandle from '../../components/toast'
+import { useAuth } from '../../hooks/authProvider'
 
 export default function Login() {
   const navigate = useNavigate();
   const toast = toastHandle();
+  const auth = useAuth();
 
   const [userData, setUserData] = useState({
     email: "",
     password: ""
   });
+
   const [loginLoading, setLoginLoading] = useState(false);
 
   async function handleLogin() {
@@ -36,13 +39,11 @@ export default function Login() {
     setLoginLoading(true);
 
     api.post('/auth/login', userData, { withCredentials: true })
-      .then((resposta) => {
-        if (resposta.status === 200) {
-          localStorage.setItem("name", resposta.data.name);
-          localStorage.setItem("email", resposta.data.email);
-          localStorage.setItem("type", resposta.data.type);
-
+      .then((res) => {
+        if (res.status === 200) {
           toast({ title: 'Login efetuado com sucesso!', status: 'success' });
+
+          auth?.saveUser({ name: res.data.name, email: res.data.email, type: res.data.type, userId: res.data.userId });
 
           navigate("/home");
         }

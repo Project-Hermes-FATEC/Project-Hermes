@@ -10,7 +10,7 @@ function toastHandle() {
         containerStyle: {
             maxWidth: '100%'
         }
-    });;
+    });
 }
 
 export default toastHandle;

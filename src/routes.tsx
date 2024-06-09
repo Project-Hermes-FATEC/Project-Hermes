@@ -1,55 +1,41 @@
-import { Navigate, createBrowserRouter, redirect } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
 import About from "./pages/about";
 import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
-import api from "./pages/helpers/axios";
 import ListaUser from "./pages/admin/userControl";
 import BeginVerify from "./pages/sales/product-verify/begin-verify";
 import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
+import { useAuth } from "./hooks/authProvider";
 
-const ProtectedRoutes = async () => {
-    let auth;
-
-    await api.get("/auth/verify", { withCredentials: true }).then(() => {
-        auth = true;
-    }).catch((e) => {
-        auth = false;
-        console.log(e);
-        localStorage.clear();
-    });
-
-    return auth ? null : redirect("/");
+function ProtectedRoutes() {
+    const auth = useAuth(); 
+    return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
 }
 
-const ProtectedAdminRoutes = async () => {
-    let auth = false;
+function ProtectedAdminRoutes() {
+    const auth = useAuth();
+    
+    if (!auth) return <Navigate to={'autenticacao/login'} />;
 
-    await api.get("/auth/verify", { withCredentials: true }).then((res) => {
-        if (res.data === 'admin') return auth = true;
-    }).catch((e) => {
-        auth = false;
-        console.log(e);
-        localStorage.clear();
-    });
+    const type = auth.getUser()?.type;
 
-    return auth ? null : redirect("/home");
+    return type == 'admin' ? <Outlet /> : <Navigate to={'/home'} />;
 }
 
 const router = createBrowserRouter([
     { path: '/', element: <Navigate to='/autenticacao/login' />, errorElement: <NotFound /> },
-    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }, { path: 'logout', }] },
+    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }] },
     {
         path: '/admin',
-        loader: ProtectedAdminRoutes,
+        element: <ProtectedAdminRoutes />,
         children: [{ path: 'users', element: <ListaUser /> }]
     },
     {
-        path: '/',
-        loader: ProtectedRoutes,
+        element: <ProtectedRoutes />,
         children:
             [
                 { path: 'home', element: <Home /> },
@@ -64,12 +50,16 @@ const router = createBrowserRouter([
                                 { path: 'chegada', element: <EndVerify /> }]
                         }]
                 },
-                { path: 'produto', children: [
-                    { path: 'listar', element: <Produto /> },
-                ]},
-                { path: 'checklist', children: [
-                    { path: 'listar', element: <></> }
-                ]}
+                {
+                    path: 'produto', children: [
+                        { path: 'listar', element: <Produto /> },
+                    ]
+                },
+                {
+                    path: 'checklist', children: [
+                        { path: 'listar', element: <></> }
+                    ]
+                }
             ]
     },
 

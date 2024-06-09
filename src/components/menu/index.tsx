@@ -12,8 +12,9 @@ function SimpleMenu({ title, items }: Props) {
     const navigate = useNavigate();
 
     return (
-        <Menu>
+        <Menu key={'menu'}>
             <MenuButton
+                key={'menuButton'}
                 as={Button}
                 rightIcon={<FaChevronCircleDown />}
                 _hover={{ bg: 'green.400' }}
@@ -21,9 +22,9 @@ function SimpleMenu({ title, items }: Props) {
                 _focus={{ boxShadow: 'outline' }}>
                 {title}
             </MenuButton>
-            <MenuList>
+            <MenuList key={'menuList'}>
                 {!items ? 'teste' : items.map(item => (
-                    <MenuItem onClick={() => { navigate(item.link) }}>
+                    <MenuItem key={item.link} onClick={() => { navigate(item.link) }}>
                         {item.value}
                     </MenuItem>
                 ))}

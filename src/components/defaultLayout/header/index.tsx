@@ -20,12 +20,13 @@ import {
 } from '@chakra-ui/react'
 
 import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, redirect, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
-import { useEffect, useState } from 'react'
-import api from '../../../pages/helpers/axios'
+import { useState } from 'react'
 import toastHandle from '../../toast'
 import SimpleMenu from '../../menu'
+import { useAuth } from '../../../hooks/authProvider'
+import api from '../../../pages/helpers/axios'
 
 interface Props {
     isAuth: boolean
@@ -34,24 +35,16 @@ interface Props {
 export default function Header({ isAuth }: Props) {
     const [iconImage, setIconImage] = useState<string>();
     const toast = toastHandle();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const auth = useAuth();
 
-    const name = localStorage.getItem("name");
-    const email = localStorage.getItem("email");
-    const type = localStorage.getItem("type");;
+    const user = auth?.getUser();
 
     let menuItems = [];
     let adminVerify;
 
-    function handleLogout() {
-        api.get("/auth/logout", { withCredentials: true }).then(res => {
-            if (res.status === 204) {
-                localStorage.clear();
-                toast({ title: "Você saiu da sua conta", status: "success" });
-            }
-        }).catch((e) => {
-            toast({ title: "Erro ao sair da conta", status: "error" });
-        });
+    async function logOut() {
+        auth?.logOut();
         navigate('/');
     }
 
@@ -73,6 +66,7 @@ export default function Header({ isAuth }: Props) {
         input.click();
     }
 
+
     menuItems = [
         {
             title: 'Vendas', items: [
@@ -91,7 +85,7 @@ export default function Header({ isAuth }: Props) {
         }
     ];
 
-    if (type === 'admin') {
+    if (user?.type === 'admin') {
         menuItems.push({ title: 'admin', items: [{ value: 'Usuários', link: '/admin/users' }] });
     }
 
@@ -132,7 +126,7 @@ export default function Header({ isAuth }: Props) {
                             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                                 <NavLink key={"Pagina inicial"} to={'/home'}><Button colorScheme='green'>{"Pagina inicial"}</Button></NavLink>
                                 {adminVerify ?
-                                    <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
+                                    <Button colorScheme='red' onClick={logOut}>Sair</Button>
                                     :
                                     menuItems.map(item => (
                                         <SimpleMenu items={item.items} title={item.title} link={''} />
@@ -141,8 +135,9 @@ export default function Header({ isAuth }: Props) {
                             </HStack>
                         </HStack>
 
-                        <Menu>
+                        <Menu key={'profileMenu'}>
                             <MenuButton
+                                key={'buttonProfileMenu'}
                                 as={Button}
                                 rounded={'full'}
                                 variant={'link'}
@@ -153,7 +148,7 @@ export default function Header({ isAuth }: Props) {
                                     src={iconImage}
                                 />
                             </MenuButton>
-                            <MenuList alignItems={'center'}>
+                            <MenuList key={"menuListProfile"} alignItems={'center'}>
                                 <br />
                                 <Center>
                                     <Avatar
@@ -170,16 +165,16 @@ export default function Header({ isAuth }: Props) {
                                 </Center>
                                 <br />
                                 <Box display={'grid'} justifyContent={'center'} alignContent={'center'}>
-                                    <p>{name}</p>
-                                    <p>{email}</p>
-                                    <p>{type}</p>
+                                    <p>{user?.name}</p>
+                                    <p>{user?.email}</p>
+                                    <p>{user?.userId}</p>
                                 </Box>
                                 <br />
                                 <MenuDivider />
-                                <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                                <MenuItem key={'itemMenuLogout'} onClick={logOut}>Sair</MenuItem>
                             </MenuList>
                         </Menu>
-                        <Text>{name}</Text>
+                        <Text>{user?.name}</Text>
                     </Stack>
                 }
             </Flex>
