@@ -18,8 +18,8 @@ function TokenExpire() {
             Você deseja continuar ou sair?
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={() => {onClose; auth?.refreshToken; navigate('/home') }}>Continuar</Button>
-            <Button colorScheme='red' onClick={() => {onClose; auth?.logOut; navigate('/') }}>Sair</Button>
+            <Button colorScheme='blue' mr={3} onClick={() => {onClose; auth!.refreshToken();}}>Continuar</Button>
+            <Button colorScheme='red' onClick={() => {onClose(); auth?.logOut(); navigate('/')}}>Sair</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -54,6 +54,8 @@ function AuthProvider({ children }: Props) {
     }
 
     async function logOut() {
+        setTokenExpired();
+
         await api.get("/auth/logout", { withCredentials: true }).then(res => {
             if (res.status === 204) {
                 toast({ title: "Você saiu da sua conta", status: "info" });
@@ -62,20 +64,24 @@ function AuthProvider({ children }: Props) {
             toast({ title: "Erro ao sair da conta", status: "error" });
         });
 
-        setExpired(false);
         remove();
     }
 
     async function refresh() {
-        await api.post('/refresh', { withCredentials: true }).then(res => {
+        await api.get('/auth/refresh', { withCredentials: true }).then(res => {
             if (res.status == 200) {
-                toast({})
+                toast({title: 'Autentição renovada', status: 'info'});
+                setTokenExpired();
+                window.location.reload();
             }
+        }).catch(e => {
+            toast({title: 'Problema ao renovar autenticação', status: 'error'});
+            console.log(e);
         })
     }
 
-    function setTokenExpired() {
-        setExpired(!isExpired);
+    async function setTokenExpired() {
+        await setExpired(!isExpired);
     }
 
     return (
