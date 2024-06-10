@@ -66,9 +66,9 @@ export default function Acordion({ content, refreshUser }: Props) {
                             <AccordionItem key={user.id}>
                                 <AccordionButton _expanded={{ bg: 'green.300' }} 
                                     onClick={() => { refreshUser();}}
-                                    display="grid"
+                                    display="flex"
                                     alignItems="center"
-                                    gridTemplateColumns={"25% 25% 25% 25%"}
+                                    justifyContent={'space-between'}
                                     p={4} >
                                     <Text fontSize="md">{user.userId}</Text>
                                     <Text fontSize="md">{user.name}</Text>

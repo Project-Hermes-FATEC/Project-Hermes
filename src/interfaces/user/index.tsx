@@ -29,7 +29,7 @@ interface ChecklistProps{
     id: number
     title: string
     description: string
-    items: ItemChecklistProps[]
+    items?: ItemChecklistProps[]
 }
 
 interface ItemChecklistProps{

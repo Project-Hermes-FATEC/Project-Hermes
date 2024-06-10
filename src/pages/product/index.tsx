@@ -32,7 +32,7 @@ import ModalCreateProduct from '../../components/modal/productModal'
   
     return (
       <Layout>
-        <ModalCreateProduct key={'1223'} isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
+        <ModalCreateProduct isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
         <Box py={6} px={5} width="full" bgColor={"blue.100"} >
           <Stack spacing={4} width={'100%'} direction={'column'}>
             <CustomListSearch title='Lista de' 
@@ -56,5 +56,5 @@ import ModalCreateProduct from '../../components/modal/productModal'
     )
   }
   
-  export default Produto
+  export default Produto;
   
