@@ -20,13 +20,11 @@ import {
 } from '@chakra-ui/react'
 
 import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink, redirect, useNavigate } from 'react-router-dom'
+import { NavLink, redirect, useLocation, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
 import { useState } from 'react'
-import toastHandle from '../../toast'
 import SimpleMenu from '../../menu'
 import { useAuth } from '../../../hooks/authProvider'
-import api from '../../../pages/helpers/axios'
 
 interface Props {
     isAuth: boolean
@@ -34,7 +32,6 @@ interface Props {
 
 export default function Header({ isAuth }: Props) {
     const [iconImage, setIconImage] = useState<string>();
-    const toast = toastHandle();
     const navigate = useNavigate();
     const auth = useAuth();
 
@@ -118,7 +115,7 @@ export default function Header({ isAuth }: Props) {
                 </Flex>
 
                 {
-                    isAuth &&
+                    !location.pathname.match('/login') &&
                     <Stack
                         justify={'space-between'}
                         direction={'row'}>

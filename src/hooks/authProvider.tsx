@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 import toastHandle from "../components/toast";
 import api from "../pages/helpers/axios";
 
@@ -6,24 +6,27 @@ interface Props {
     children: ReactNode
 }
 
-interface AuthUser{
-    name: string 
-    email: string 
-    type: string 
-    userId: string 
+interface AuthUser {
+    name: string
+    email: string
+    type: string
+    userId: string
 }
 
 interface AuthProps {
-    user?: AuthUser
+    setTokenEx(): void
+    isExpired: boolean
+    refreshToken(): void
     saveUser(data: AuthUser): void
     getUser(): AuthUser | undefined
     removeUser(): void
-    logOut() : void
+    logOut(): void
 }
 
 const AuthContext = createContext<AuthProps | null>(null);
 
 function AuthProvider({ children }: Props) {
+    const [isExpired, setExpired] = useState(false);
     const toast = toastHandle();
 
     function save(data: AuthUser) {
@@ -34,7 +37,7 @@ function AuthProvider({ children }: Props) {
     }
 
     function get() {
-        if(!localStorage.getItem('email') && !localStorage.getItem('name') && !localStorage.getItem('type') && !localStorage.getItem('userId')) return;
+        if (!localStorage.getItem('email') || !localStorage.getItem('name') || !localStorage.getItem('type') || !localStorage.getItem('userId')) return undefined;
 
         const user: AuthUser = {
             name: localStorage.getItem('name') || '',
@@ -44,9 +47,9 @@ function AuthProvider({ children }: Props) {
         }
 
         return user;
-    }  
+    }
 
-    function remove(){
+    function remove() {
         localStorage.clear();
     }
 
@@ -59,11 +62,32 @@ function AuthProvider({ children }: Props) {
             toast({ title: "Erro ao sair da conta", status: "error" });
         });
 
+        setExpired(false);
         remove();
     }
 
+    async function refresh() {
+        await api.post('/refresh', { withCredentials: true }).then(res => {
+            if (res.status == 200) {
+                toast({})
+            }
+        })
+    }
+
+    function setTokenExpired() {
+        setExpired(!isExpired);
+    }
+
     return (
-        <AuthContext.Provider value={{ saveUser: save, getUser: get, removeUser: remove, logOut: logOut }}>
+        <AuthContext.Provider value={{
+            setTokenEx: setTokenExpired,
+            isExpired: isExpired,
+            refreshToken: refresh,
+            saveUser: save,
+            getUser: get,
+            removeUser: remove,
+            logOut: logOut
+        }}>
             {children}
         </AuthContext.Provider>
     )

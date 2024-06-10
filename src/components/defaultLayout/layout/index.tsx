@@ -2,6 +2,7 @@ import Header from "../header"
 import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
 import Footer from "../footer"
 import { useLocation } from "react-router-dom"
+import TokenExpire from "../../modal/tokenExpireModal"
 
 interface Props {
     children: React.ReactNode
@@ -22,6 +23,7 @@ function Layout(props: Props) {
             backgroundColor={useColorModeValue('gray.300', 'gray.800')}
             backgroundSize={'cover'}
             minH={'100vh'}>
+                <TokenExpire />
             <GridItem colSpan={1} rowSpan={1}>
                 <Header isAuth={isAuth()} />
             </GridItem>

@@ -10,6 +10,7 @@ import BeginVerify from "./pages/sales/product-verify/begin-verify";
 import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
+import Checklist from "./pages/checklist";
 
 function ProtectedRoutes() {
     const auth = useAuth(); 
@@ -57,7 +58,7 @@ const router = createBrowserRouter([
                 },
                 {
                     path: 'checklist', children: [
-                        { path: 'listar', element: <></> }
+                        { path: 'listar', element: <Checklist></Checklist> }
                     ]
                 }
             ]
