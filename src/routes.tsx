@@ -1,4 +1,4 @@
-import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter, useNavigate } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
@@ -19,9 +19,12 @@ function ProtectedRoutes() {
     api.interceptors.response.use(
         response => response,
         error => {
-            if(error.reponse && [401, 403].includes(error.response.status) || error.response.data.error.match('Token')){
+            if(error.reponse && [401, 403].includes(error.response.status)){
                 console.log('Não autenticado', error);
                 auth?.setTokenEx();
+            } else if(error.response.data.error.match('Token inválido')){
+                localStorage.clear();
+                window.location.href = '/'
             } else {
                 error;
             }});
@@ -78,6 +81,5 @@ const router = createBrowserRouter([
     },
 
 ])
-
 
 export default router;
