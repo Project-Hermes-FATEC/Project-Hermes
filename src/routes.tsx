@@ -11,7 +11,6 @@ import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
-import Mission from "./pages/mission";
 import api from "./pages/helpers/axios";
 
 function ProtectedRoutes() {
@@ -52,7 +51,6 @@ const router = createBrowserRouter([
         element: <ProtectedAdminRoutes />,
         children: [{ path: 'users', element: <ListaUser /> }]
     },
-    { path: '/missao', element: <Mission /> },
     {
         element: <ProtectedRoutes />,
         children:
