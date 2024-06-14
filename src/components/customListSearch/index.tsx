@@ -12,6 +12,7 @@ interface Props {
 function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
     return(
         <Stack
+            key={title}
             p={5}
             alignItems={'center'}
             justifyContent={{
@@ -23,6 +24,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               md: 'row',
             }}>
             <Stack
+              key={title_sub}
               width={{
                 base: '100%',
                 md: '40%',
@@ -33,6 +35,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               </Heading>
             </Stack>
             <Stack
+              key={title + title_sub}
               width={{
                 base: '100%',
                 md: '60%',

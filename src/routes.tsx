@@ -14,28 +14,28 @@ import Checklist from "./pages/checklist";
 import api from "./pages/helpers/axios";
 
 function ProtectedRoutes() {
-    const auth = useAuth(); 
+    const auth = useAuth();
 
     api.interceptors.response.use(
-        response => response,
-        error => {
-            if(error.reponse && [401, 403].includes(error.response.status)){
+        function (response) {
+            return response;
+        }, function (error) {
+            if (error.response.status == 401) {
                 console.log('Não autenticado', error);
                 auth?.setTokenEx();
-            } else if(error.response.data.error.match('Token inválido')){
+            } else if (error.data.error.match('Token inválido')) {
                 localStorage.clear();
                 window.location.href = '/'
-            } else {
-                error;
-            }});
+            }
+        });
 
     return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
-    
+
 }
 
 function ProtectedAdminRoutes() {
     const auth = useAuth();
-    
+
     if (!auth) return <Navigate to={'autenticacao/login'} />;
 
     const type = auth.getUser()?.type;

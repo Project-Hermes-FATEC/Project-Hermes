@@ -14,7 +14,9 @@ import {
     Divider,
     Badge,
     Textarea,
+    Button,
 } from '@chakra-ui/react'
+import { MdOutlineAddCircleOutline } from 'react-icons/md';
 
 interface Props {
     content: Array<ChecklistProps>
@@ -22,6 +24,9 @@ interface Props {
 }
 
 export default function AccordionChecklist({ content, refreshChecklist }: Props) {
+    const accordColor = useColorModeValue('yellow.500', 'wheat.600');
+    const addItem = useColorModeValue('green.500', 'green.600');
+
     return (
         <Flex
             align={'center'}
@@ -41,7 +46,8 @@ export default function AccordionChecklist({ content, refreshChecklist }: Props)
                     {
                         content.map((checklist) => (
                             <AccordionItem key={checklist.id}>
-                                <AccordionButton _expanded={{ bg: 'green.300' }}
+                                <AccordionButton key={'accordionButtonMain'}
+                                    _expanded={{ bg: 'green.300' }}
                                     display="flex"
                                     alignItems="center"
                                     justifyContent={'space-between'}
@@ -51,8 +57,36 @@ export default function AccordionChecklist({ content, refreshChecklist }: Props)
                                     <AccordionIcon />
                                 </AccordionButton>
 
+                                <AccordionPanel bgColor={'green.600'} border={'2px solid'}>
+                                    <Accordion allowToggle bgColor={'green.500'}>
+                                        <AccordionItem key={checklist.description}>
+                                            <AccordionButton key={'accordionButtonChilden'}
+                                                _expanded={{ bg: 'green.300' }}
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent={'space-between'}
+                                                py={4}>
+                                                <Text fontSize="xl">Adicionar novo item</Text>
+                                                <AccordionIcon as={MdOutlineAddCircleOutline} />
+                                            </AccordionButton>
+                                            <AccordionPanel key={'createCheckListItem'} pb={4} bgColor={addItem} display={'flex'} justifyContent={'space-between'}>
+                                                <Box display={'grid'} justifyContent={'space-between'}>
+                                                    <FormControl>
+                                                        <Badge><Text fontSize={'2xl'}>Novo item</Text></Badge>
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <FormLabel>Descrição</FormLabel>
+                                                        <Textarea placeholder='Insira a descrição' bgColor={"white"} width={"lg"} />
+                                                    </FormControl>                                                   
+                                                </Box>
+                                                <Button variant={'solid'} colorScheme='yellow'>Adicionar</Button>
+                                            </AccordionPanel>
+                                        </AccordionItem>
+                                    </Accordion>
+                                </AccordionPanel>
+
                                 {checklist.items?.map((item, index) => (
-                                    <AccordionPanel pb={4} bgColor={useColorModeValue('yellow.500', 'wheat.600')}>
+                                    <AccordionPanel key={item.id} pb={4} bgColor={accordColor}>
                                         <Divider border='2px solid' color='green' />
 
                                         <Box display={"flex"}>

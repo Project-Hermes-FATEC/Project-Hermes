@@ -43,12 +43,12 @@ function ListaVendas() {
           <CustomListSearch title='Lista de' 
           title_sub='Vendas' 
           placeHolder='Pesquisar por vendas' 
-          buttons={[<Button onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar venda</Button>]} />
+          buttons={[<Button key={'salesListButton'} onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar venda</Button>]} />
           {
             sales.map(sell => (
               <>
                 <Divider />
-                <ItemListaGenerica key={'itemList'} title={sell.salesNumber.toString()}
+                <ItemListaGenerica key={sell.id} title={sell.salesNumber.toString()}
                   title2={sell.product?.name}
                   checked={true}
                   options={options} />

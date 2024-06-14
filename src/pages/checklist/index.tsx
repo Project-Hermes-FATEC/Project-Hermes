@@ -6,19 +6,17 @@ import {
 } from '@chakra-ui/react'
 import Layout from '../../components/defaultLayout/layout'
 import CustomListSearch from '../../components/customListSearch'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import api from '../helpers/axios'
 import toastHandle from '../../components/toast'
 import { FaPlus } from 'react-icons/fa'
 import ModalCreateProduct from '../../components/modal/productModal'
 import AccordionChecklist from '../../components/accordionChecklist'
-import { useAuth } from '../../hooks/authProvider'
 
 function Checklist() {
   const [checkList, setChecklist] = useState<ChecklistProps[]>([]);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = toastHandle();
-  const auth = useAuth();
 
   async function loadChecklists() {
     await api.get('/checklist', { withCredentials: true }).then(res => {
@@ -39,7 +37,7 @@ function Checklist() {
           <CustomListSearch title='Lista de'
             title_sub='Check Lists'
             placeHolder='Pesquisar por check list'
-            buttons={[<Button onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar novo check list</Button>]} />
+            buttons={[<Button key={'checklistListButton'} onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar novo check list</Button>]} />
           <AccordionChecklist content={checkList} refreshChecklist={loadChecklists} />
         </Stack>
       </Box>

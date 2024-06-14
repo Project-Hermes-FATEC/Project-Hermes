@@ -38,7 +38,7 @@ import ModalCreateProduct from '../../components/modal/productModal'
             <CustomListSearch title='Lista de' 
             title_sub='Produtos' 
             placeHolder='Pesquisar por produtos' 
-            buttons={[<Button onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar novo produto</Button>]} />
+            buttons={[<Button key={'productListButton'} onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar novo produto</Button>]} />
             {
               product.map(produc => (
                 <>

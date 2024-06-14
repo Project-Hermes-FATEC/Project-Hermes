@@ -132,7 +132,7 @@ export default function Header() {
                                     <Button colorScheme='red' onClick={logOut}>Sair</Button>
                                     :
                                     menuItems.map(item => (
-                                        <SimpleMenu items={item.items} title={item.title} link={''} />
+                                        <SimpleMenu key={item.title} items={item.items} title={item.title} link={''} />
                                     ))
                                 }
                             </HStack>

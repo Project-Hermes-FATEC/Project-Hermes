@@ -12,13 +12,13 @@ function ListaUser() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     async function loadUsers() {
-        const res = await api.get('/user/admin', { withCredentials: true });
-
-        if (res.status === 201) {
-            setListUsers(res.data);
-        } else {
-            alert(res.statusText);
-        }
+        await api.get('/user/admin', { withCredentials: true }).then(res => {
+            if (res.status === 201) {
+                setListUsers(res.data);
+            }
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     return (
@@ -29,6 +29,7 @@ function ListaUser() {
                 placeHolder='Pesquise por um usuário'
                 buttons={[
                     <Button 
+                    key={'userListButton'}
                     leftIcon={<FaPlus />} 
                     colorScheme='green' onClick={onOpen}>
                         Cadastrar usuário
