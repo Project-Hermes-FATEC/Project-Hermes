@@ -35,7 +35,12 @@ export default function About() {
                         </Flex>
                     ))}
                     <VStack spacing={4} align="stretch" marginTop={5}>
-                        <Tooltip hasArrow label="Voltar para a página inicial" bg="green.400" placement='right' fontSize='medium'>
+                    <Tooltip hasArrow label="Ir para Missão" bg="green.600" placement='right' fontSize='medium'>
+                            <Link to={'/missao'}>
+                                <Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Missão</Button>
+                            </Link>
+                        </Tooltip>
+                        <Tooltip hasArrow label="Voltar para a página inicial" bg="green.600" placement='right' fontSize='medium'>
                             <Link to={'/Home'}>
                                 <Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Voltar</Button>
                             </Link>
