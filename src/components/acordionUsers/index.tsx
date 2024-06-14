@@ -27,6 +27,7 @@ interface Props {
 export default function Acordion({ content, refreshUser }: Props) {
     const [user, setUser] = useState<UserProps>();
     const toast = toastHandle();
+    const accordPanelColor = useColorModeValue('yellow.500', 'wheat.600');
 
     content = content.filter(user => (user.email !== localStorage.getItem("email")));
 
@@ -75,7 +76,7 @@ export default function Acordion({ content, refreshUser }: Props) {
                                     <Text fontSize="md">{user.email}</Text>
                                     <AccordionIcon />
                                 </AccordionButton>
-                                <AccordionPanel pb={4} bgColor={useColorModeValue('yellow.500', 'wheat.600')}>
+                                <AccordionPanel pb={4} bgColor={accordPanelColor}>
                                     <Box display={"flex"}>
                                         <FormControl>
                                             <FormLabel>E-mail</FormLabel>

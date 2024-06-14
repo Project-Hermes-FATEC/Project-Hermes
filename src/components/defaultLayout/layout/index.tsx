@@ -1,7 +1,6 @@
 import Header from "../header"
 import { Grid, GridItem, useColorModeValue } from "@chakra-ui/react"
 import Footer from "../footer"
-import { useLocation } from "react-router-dom"
 import TokenExpire from "../../modal/tokenExpireModal"
 
 interface Props {
@@ -10,11 +9,6 @@ interface Props {
 
 function Layout(props: Props) {
     const { children } = props
-    const location = useLocation();
-
-    const isAuth = () => {
-        return location.pathname.match('/login') ? false : true;
-    }
 
     return (
         <Grid
@@ -25,7 +19,7 @@ function Layout(props: Props) {
             minH={'100vh'}>
                 <TokenExpire />
             <GridItem colSpan={1} rowSpan={1}>
-                <Header isAuth={isAuth()} />
+                <Header />
             </GridItem>
             <GridItem colSpan={1} rowSpan={1}>
                 {children}
