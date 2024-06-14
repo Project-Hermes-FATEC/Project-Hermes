@@ -11,10 +11,23 @@ import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
+import api from "./pages/helpers/axios";
 
 function ProtectedRoutes() {
     const auth = useAuth(); 
+
+    api.interceptors.response.use(
+        response => response,
+        error => {
+            if(error.reponse && [401, 403].includes(error.response.status) || error.response.data.error.match('Token')){
+                console.log('Não autenticado', error);
+                auth?.setTokenEx();
+            } else {
+                error;
+            }});
+
     return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
+    
 }
 
 function ProtectedAdminRoutes() {
@@ -66,4 +79,5 @@ const router = createBrowserRouter([
 
 ])
 
-export default router
+
+export default router;

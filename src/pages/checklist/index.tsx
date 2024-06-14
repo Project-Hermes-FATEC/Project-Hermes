@@ -28,10 +28,6 @@ function Checklist() {
     }).catch(e => {
       toast({ title: "Não foi possível carregar os produtos", status: 'error' });
       console.log(e);
-
-      if (e.response.data.error.match('Token')) {
-        auth?.setTokenEx();
-      }
     })
   };
 

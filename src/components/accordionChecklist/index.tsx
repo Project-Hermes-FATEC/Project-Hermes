@@ -8,10 +8,7 @@ import {
     Text,
     Container,
     AccordionIcon,
-    Input,
     Box,
-    Button,
-    Select,
     FormLabel,
     FormControl,
     Divider,
@@ -56,7 +53,7 @@ export default function AccordionChecklist({ content, refreshChecklist }: Props)
 
                                 {checklist.items?.map((item, index) => (
                                     <AccordionPanel pb={4} bgColor={useColorModeValue('yellow.500', 'wheat.600')}>
-                                        <Divider />
+                                        <Divider border='2px solid' color='green' />
 
                                         <Box display={"flex"}>
                                             <FormControl>

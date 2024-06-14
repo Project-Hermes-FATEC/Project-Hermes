@@ -11,6 +11,7 @@ interface AuthUser {
     email: string
     type: string
     userId: string
+    profile: string
 }
 
 interface AuthProps {
@@ -43,7 +44,8 @@ function AuthProvider({ children }: Props) {
             name: localStorage.getItem('name') || '',
             email: localStorage.getItem('email') || '',
             type: localStorage.getItem('type') || '',
-            userId: localStorage.getItem('userId') || ''
+            userId: localStorage.getItem('userId') || '',
+            profile: localStorage.getItem('profile') || ''
         }
 
         return user;
@@ -54,14 +56,15 @@ function AuthProvider({ children }: Props) {
     }
 
     async function logOut() {
-        setTokenExpired();
+        isExpired == true ? setTokenExpired() : setExpired(false);
 
         await api.get("/auth/logout", { withCredentials: true }).then(res => {
             if (res.status === 204) {
                 toast({ title: "Você saiu da sua conta", status: "info" });
             }
         }).catch((e) => {
-            toast({ title: "Erro ao sair da conta", status: "error" });
+            toast({ title: "Você saiu da sua conta", status: "info" });
+            console.log(e);
         });
 
         remove();

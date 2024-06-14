@@ -20,17 +20,14 @@ import {
 } from '@chakra-ui/react'
 
 import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink, redirect, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
 import { useState } from 'react'
 import SimpleMenu from '../../menu'
 import { useAuth } from '../../../hooks/authProvider'
+import api from '../../../pages/helpers/axios'
 
-interface Props {
-    isAuth: boolean
-}
-
-export default function Header({ isAuth }: Props) {
+export default function Header() {
     const [iconImage, setIconImage] = useState<string>();
     const navigate = useNavigate();
     const auth = useAuth();
@@ -56,7 +53,16 @@ export default function Header({ isAuth }: Props) {
 
             if (file) {
                 const imageURL = URL.createObjectURL(file);
-                setIconImage(imageURL)
+                const blob = {profilePic: new Blob([file], {type: 'text'})}
+
+                api.post('/user/profile', blob)
+                .then(() => {
+                    localStorage.setItem('profile', imageURL);
+                    setIconImage(imageURL);
+                })
+                .catch(e => {
+                    console.log(e);
+                });              
             }
         });
 

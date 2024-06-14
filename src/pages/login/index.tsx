@@ -43,7 +43,7 @@ export default function Login() {
         if (res.status === 200) {
           toast({ title: 'Login efetuado com sucesso!', status: 'success' });
 
-          auth?.saveUser({ name: res.data.name, email: res.data.email, type: res.data.type, userId: res.data.userId });
+          auth?.saveUser({ name: res.data.name, email: res.data.email, type: res.data.type, userId: res.data.userId, profile: res.data.profile });
 
           navigate("/home");
         }
