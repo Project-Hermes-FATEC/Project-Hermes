@@ -25,7 +25,7 @@ function ProtectedRoutes() {
                 auth?.setTokenEx();
             } else if (error.data.error.match('Token inválido')) {
                 localStorage.clear();
-                window.location.href = '/'
+                window.location.href = '/';
             }
         });
 
