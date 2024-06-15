@@ -1,7 +1,6 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select, InputRightElement, InputGroup } from "@chakra-ui/react"
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
 import toastHandle from "../../toast";
-import api from "../../../pages/helpers/axios";
 
 interface Props {
     isOpen: boolean
@@ -12,7 +11,6 @@ interface Props {
 function ModalCreateSales({ isOpen, onClose, loadSales }: Props) {
     const emptySales = { salesNumber: '', productId: '', userId: '', checklist: '' };
     const [sales, setSales] = useState(emptySales);
-    const [show, setShow] = React.useState(false)
     const initialRef = React.useRef(null)
     const toast = toastHandle();
 

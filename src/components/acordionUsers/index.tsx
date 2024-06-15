@@ -40,6 +40,7 @@ export default function Acordion({ content, refreshUser }: Props) {
             }
         }).catch(e => {
             toast({ title: "Não foi possível atualizar informações", status: 'error'});
+            console.log(e);
         });
 
         refreshUser();
@@ -50,6 +51,7 @@ export default function Acordion({ content, refreshUser }: Props) {
             if(res.status === 200) toast({ title: "Senha resetada com sucesso!", status: 'success'});
         }).catch(e => {
             toast({ title: "Não foi possível resetar a senha", status: 'error'});
+            console.log(e);
         });
 
         refreshUser();
