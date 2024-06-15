@@ -8,7 +8,7 @@ function NotFound(){
                 display="inline-block"
                 as="h2"
                 size="2xl"
-                bgGradient="linear(to-r, teal.400, teal.600)"
+                bgGradient="linear(to-r, green.400, green.600)"
                 backgroundClip="text">
                 404
             </Heading>

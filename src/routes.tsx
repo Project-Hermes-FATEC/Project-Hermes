@@ -1,40 +1,69 @@
-import { Navigate, createBrowserRouter, redirect } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
-import Sobre from "./pages/Sobre";
+import About from "./pages/about/us";
 import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
-import api from "./pages/helpers/axios";
-import ListaUser from "./pages/admin/lista";
+import ListaUser from "./pages/admin/userControl";
+import BeginVerify from "./pages/sales/product-verify/begin-verify";
+import EndVerify from "./pages/sales/product-verify/end-verify";
+import Produto from "./pages/product";
+import { useAuth } from "./hooks/authProvider";
+import Checklist from "./pages/checklist";
+import Mission from "./pages/about/mission";
 
-const ProtectedRoutes = async () => {
-    let auth;
-    await api.get("/auth/verify", {withCredentials: true}).then(() => {
-        auth = true;
-    }).catch((e) => {
-        auth = false;
-        console.log(e);
-        localStorage.clear();
-    });
+function ProtectedRoutes() {
+    const auth = useAuth(); 
+    return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
+}
 
-    return auth ? null : redirect("/");
+function ProtectedAdminRoutes() {
+    const auth = useAuth();
+    
+    if (!auth) return <Navigate to={'autenticacao/login'} />;
+
+    const type = auth.getUser()?.type;
+
+    return type == 'admin' ? <Outlet /> : <Navigate to={'/home'} />;
 }
 
 const router = createBrowserRouter([
     { path: '/', element: <Navigate to='/autenticacao/login' />, errorElement: <NotFound /> },
-    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }, { path: 'logout',  }] },
-    { path: '/admin', children: [{ path: 'listar', element: <ListaUser /> }] },
+    { path: '/autenticacao', children: [{ path: 'login', element: <Login /> }] },
     {
-        path: '/', 
-        loader: ProtectedRoutes,
+        path: '/admin',
+        element: <ProtectedAdminRoutes />,
+        children: [{ path: 'users', element: <ListaUser /> }]
+    },
+    {
+        element: <ProtectedRoutes />,
         children:
             [
-                { path: '/home', element: <Home /> },
-                { path: '/sobre', element: <Sobre /> },
-                { path: '/vendas', children: [{ path: 'cadastrar', element: <VerificaProduto /> }, 
-                                              { path: 'listar', element: <ListaVendas /> }] }
-            ]        
+                { path: 'home', element: <Home /> },
+                { path: 'sobre', element: <About /> },
+                { path: 'missao', element: <Mission /> },
+                {
+                    path: 'vendas', children: [
+                        { path: 'cadastrar', element: <VerificaProduto /> },
+                        { path: 'listar', element: <ListaVendas /> },
+                        {
+                            path: 'verificar', element: <ListaVendas />, children: [
+                                { path: 'saida', element: <BeginVerify /> },
+                                { path: 'chegada', element: <EndVerify /> }]
+                        }]
+                },
+                {
+                    path: 'produto', children: [
+                        { path: 'listar', element: <Produto /> },
+                    ]
+                },
+                {
+                    path: 'checklist', children: [
+                        { path: 'listar', element: <Checklist></Checklist> }
+                    ]
+                }
+            ]
     },
 
 ])

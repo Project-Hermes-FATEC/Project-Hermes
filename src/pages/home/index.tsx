@@ -1,8 +1,12 @@
 import { Box, Button, Flex, Heading, Text, Tooltip, VStack, useColorModeValue } from "@chakra-ui/react"
-import Layout from "../../components/layout"
-import { Link } from 'react-router-dom'
+import Layout from "../../components/defaultLayout/layout"
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from "../../hooks/authProvider";
 
 function Home() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <Flex
@@ -30,7 +34,7 @@ function Home() {
               <Link to={'/Sobre'}><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Equipe Hermes</Button></Link>
             </Tooltip>
             <Tooltip hasArrow label="Fazer Logout e voltar a página de Login." bg="green.400" placement='right' fontSize='medium'>
-              <Link to="/autenticacao/login"><Button bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Sair</Button></Link>
+              <Button onClick={() => {auth?.logOut(); navigate('/');}} bg="yellow.400" color="black" _hover={{ bg: 'yellow.500' }} width="100%">Sair</Button>
             </Tooltip>
           </VStack>
         </Box>

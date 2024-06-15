@@ -1,17 +1,18 @@
 import { Stack, Heading, InputGroup, InputLeftElement, Button, Icon, Input, Text } from "@chakra-ui/react"
 import { FaSearch } from "react-icons/fa"
-import ButtonCustom from "../button"
+import { ReactElement } from "react"
 
 interface Props {
     title: string
     title_sub: string
     placeHolder: string
-    buttons?: Array<string>
+    buttons?: Array<ReactElement>
 }
 
 function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
     return(
         <Stack
+            key={title}
             p={5}
             alignItems={'center'}
             justifyContent={{
@@ -23,6 +24,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               md: 'row',
             }}>
             <Stack
+              key={title_sub}
               width={{
                 base: '100%',
                 md: '40%',
@@ -33,6 +35,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               </Heading>
             </Stack>
             <Stack
+              key={title + title_sub}
               width={{
                 base: '100%',
                 md: '60%',
@@ -48,7 +51,7 @@ function CustomListSearch({ title, title_sub, placeHolder, buttons }: Props){
               </InputGroup>
               {
                 buttons?.map((button) => (
-                    <ButtonCustom title={button} />
+                    button
                 ))
               }
             </Stack>

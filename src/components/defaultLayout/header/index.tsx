@@ -19,21 +19,28 @@ import {
     IconButton,
 } from '@chakra-ui/react'
 
-import logo_cervo_jd from '../../assets/icons/John-Deere-Logo-Cervo.png'
-import { NavLink } from 'react-router-dom'
-import { handleLogout } from '../../functions/auth/logout'
+import logo_cervo_jd from '../../../assets/icons/John-Deere-Logo-Cervo.png'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { PiPencil } from 'react-icons/pi'
 import { useState } from 'react'
+import SimpleMenu from '../../menu'
+import { useAuth } from '../../../hooks/authProvider'
+import api from '../../../pages/helpers/axios'
 
-interface Props {
-    isAuth: boolean
-}
-
-export default function Header({ isAuth }: Props) {
+export default function Header() {
     const [iconImage, setIconImage] = useState<string>();
+    const navigate = useNavigate();
+    const auth = useAuth();
 
-    let Links = [{ titulo: '', link: '' }];
+    const user = auth?.getUser();
+
+    let menuItems = [];
     let adminVerify;
+
+    async function logOut() {
+        auth?.logOut();
+        navigate('/');
+    }
 
     function handleUpdateImage() {
         let input = document.createElement('input');
@@ -43,10 +50,19 @@ export default function Header({ isAuth }: Props) {
 
         input.addEventListener('change', (e) => {
             const file = (e.target as HTMLInputElement).files?.[0];
-            
-            if(file){
+
+            if (file) {
                 const imageURL = URL.createObjectURL(file);
-                setIconImage(imageURL)
+                const blob = {profilePic: new Blob([file], {type: 'text'})}
+
+                api.post('/user/profile', blob)
+                .then(() => {
+                    localStorage.setItem('profile', imageURL);
+                    setIconImage(imageURL);
+                })
+                .catch(e => {
+                    console.log(e);
+                });              
             }
         });
 
@@ -54,15 +70,28 @@ export default function Header({ isAuth }: Props) {
     }
 
 
-    location.pathname.match("/admin/") ? adminVerify = true : adminVerify = false
+    menuItems = [
+        {
+            title: 'Vendas', items: [
+                { value: 'Visualizar', link: '/vendas/listar' },
+            ]
+        },
+        {
+            title: 'Produtos', items: [
+                { value: 'Visualizar', link: '/produto/listar' },
+            ]
+        },
+        {
+            title: 'Checklist', items: [
+                { value: 'Visualizar', link: '/checklist/listar' },
+            ]
+        }
+    ];
 
-    if (!adminVerify) {
-        Links = [{ titulo: 'Página inicial', link: '/home' },
-        { titulo: 'Listar vendas', link: '/vendas/listar' },
-        { titulo: 'Registar venda', link: '/vendas/cadastrar' }];
+    if (user?.type === 'admin') {
+        menuItems.push({ title: 'admin', items: [{ value: 'Usuários', link: '/admin/users' }] });
     }
 
-    const userName = localStorage.getItem("name");
 
     return (
         <Box>
@@ -92,23 +121,26 @@ export default function Header({ isAuth }: Props) {
                 </Flex>
 
                 {
-                    isAuth &&
+                    !location.pathname.match('/login') &&
                     <Stack
                         justify={'space-between'}
                         direction={'row'}>
                         <HStack spacing={8} alignItems={'center'} mr={5}>
                             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+                                <NavLink key={"Pagina inicial"} to={'/home'}><Button colorScheme='green'>{"Pagina inicial"}</Button></NavLink>
                                 {adminVerify ?
-                                    <Button colorScheme='red' onClick={handleLogout}>Sair</Button>
+                                    <Button colorScheme='red' onClick={logOut}>Sair</Button>
                                     :
-                                    Links.map((link) => (
-                                        <NavLink key={link.titulo} to={link.link}>{link.titulo}</NavLink>
-                                    ))}
+                                    menuItems.map(item => (
+                                        <SimpleMenu key={item.title} items={item.items} title={item.title} link={''} />
+                                    ))
+                                }
                             </HStack>
                         </HStack>
 
-                        <Menu>
+                        <Menu key={'profileMenu'}>
                             <MenuButton
+                                key={'buttonProfileMenu'}
                                 as={Button}
                                 rounded={'full'}
                                 variant={'link'}
@@ -119,7 +151,7 @@ export default function Header({ isAuth }: Props) {
                                     src={iconImage}
                                 />
                             </MenuButton>
-                            <MenuList alignItems={'center'}>
+                            <MenuList key={"menuListProfile"} alignItems={'center'}>
                                 <br />
                                 <Center>
                                     <Avatar
@@ -135,15 +167,17 @@ export default function Header({ isAuth }: Props) {
                                             icon={<PiPencil />} /> </Avatar>
                                 </Center>
                                 <br />
-                                <Center>
-                                    <p>{userName}</p>
-                                </Center>
+                                <Box display={'grid'} justifyContent={'center'} alignContent={'center'}>
+                                    <p>{user?.name}</p>
+                                    <p>{user?.email}</p>
+                                    <p>{user?.userId}</p>
+                                </Box>
                                 <br />
                                 <MenuDivider />
-                                <MenuItem onClick={handleLogout}>Sair</MenuItem>
+                                <MenuItem key={'itemMenuLogout'} onClick={logOut}>Sair</MenuItem>
                             </MenuList>
                         </Menu>
-                        <Text>{userName}</Text>
+                        <Text>{user?.name}</Text>
                     </Stack>
                 }
             </Flex>
