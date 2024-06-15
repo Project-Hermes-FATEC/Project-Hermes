@@ -1,4 +1,4 @@
-import { Navigate, Outlet, createBrowserRouter, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
@@ -11,31 +11,16 @@ import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
-import api from "./pages/helpers/axios";
+import Mission from "./pages/mission";
 
 function ProtectedRoutes() {
-    const auth = useAuth();
-
-    api.interceptors.response.use(
-        function (response) {
-            return response;
-        }, function (error) {
-            if (error.response.status == 401) {
-                console.log('Não autenticado', error);
-                auth?.setTokenEx();
-            } else if (error.data.error.match('Token inválido')) {
-                localStorage.clear();
-                window.location.href = '/';
-            }
-        });
-
+    const auth = useAuth(); 
     return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
-
 }
 
 function ProtectedAdminRoutes() {
     const auth = useAuth();
-
+    
     if (!auth) return <Navigate to={'autenticacao/login'} />;
 
     const type = auth.getUser()?.type;
@@ -51,6 +36,7 @@ const router = createBrowserRouter([
         element: <ProtectedAdminRoutes />,
         children: [{ path: 'users', element: <ListaUser /> }]
     },
+    { path: '/missao', element: <Mission /> },
     {
         element: <ProtectedRoutes />,
         children:
@@ -82,4 +68,4 @@ const router = createBrowserRouter([
 
 ])
 
-export default router;
+export default router
