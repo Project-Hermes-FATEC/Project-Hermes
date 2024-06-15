@@ -32,6 +32,7 @@ function ListaVendas() {
       }
     }).catch(e => {
       toast({ title: "Não foi possível carregar as vendas", status: 'error' });
+      console.log(e);
     })
   };
 
