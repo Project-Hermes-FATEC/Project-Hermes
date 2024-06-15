@@ -12,15 +12,30 @@ import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
 import Mission from "./pages/about/mission";
+import api from "./pages/helpers/axios";
+
+
 
 function ProtectedRoutes() {
-    const auth = useAuth(); 
+    const auth = useAuth();
+
+    api.interceptors.response.use(
+        response => response,
+        error => {
+            if (error.response && [401, 403].includes(error.response.status)) {
+                console.log('Não autenticado', error);
+                auth?.setTokenEx();
+            } else {
+                error;
+            }
+        });
+
     return auth?.getUser() == undefined ? <Navigate to={'autenticacao/login'} /> : <Outlet />;
 }
 
 function ProtectedAdminRoutes() {
     const auth = useAuth();
-    
+
     if (!auth) return <Navigate to={'autenticacao/login'} />;
 
     const type = auth.getUser()?.type;
@@ -68,4 +83,4 @@ const router = createBrowserRouter([
 
 ])
 
-export default router
+export default router;

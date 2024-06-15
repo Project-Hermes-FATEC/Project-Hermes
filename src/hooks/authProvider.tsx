@@ -56,7 +56,7 @@ function AuthProvider({ children }: Props) {
     }
 
     async function logOut() {
-        isExpired == true ? setTokenExpired() : setExpired(false);
+        setExpired(false);
 
         await api.get("/auth/logout", { withCredentials: true }).then(res => {
             if (res.status === 204) {

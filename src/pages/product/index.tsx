@@ -25,7 +25,7 @@ import ModalCreateProduct from '../../components/modal/productModal'
           setProducts(res.data);
         }
       }).catch(e => {
-        toast({ title: "Não foi possível carregar os produtos", status: 'error' });
+        toast({ title: "Não foi possível carregar os produtos", status: 'error', id: Date.now() });
         console.log(e);
       })
     };

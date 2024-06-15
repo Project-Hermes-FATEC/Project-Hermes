@@ -31,7 +31,7 @@ function ListaVendas() {
         setSales(res.data);
       }
     }).catch(e => {
-      toast({ title: "Não foi possível carregar as vendas", status: 'error' });
+      toast({ title: "Não foi possível carregar as vendas", status: 'error', id: Date.now() });
       console.log(e);
     })
   };
