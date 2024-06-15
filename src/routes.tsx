@@ -2,7 +2,7 @@ import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import NotFound from "./pages/404";
 import Home from "./pages/home";
-import About from "./pages/about";
+import About from "./pages/about/us";
 import VerificaProduto from "./pages/sales/product-generate";
 import ListaVendas from "./pages/sales/sales-list";
 import ListaUser from "./pages/admin/userControl";
@@ -11,7 +11,7 @@ import EndVerify from "./pages/sales/product-verify/end-verify";
 import Produto from "./pages/product";
 import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
-import Mission from "./pages/mission";
+import Mission from "./pages/about/mission";
 
 function ProtectedRoutes() {
     const auth = useAuth(); 
@@ -36,13 +36,13 @@ const router = createBrowserRouter([
         element: <ProtectedAdminRoutes />,
         children: [{ path: 'users', element: <ListaUser /> }]
     },
-    { path: '/missao', element: <Mission /> },
     {
         element: <ProtectedRoutes />,
         children:
             [
                 { path: 'home', element: <Home /> },
                 { path: 'sobre', element: <About /> },
+                { path: 'missao', element: <Mission /> },
                 {
                     path: 'vendas', children: [
                         { path: 'cadastrar', element: <VerificaProduto /> },

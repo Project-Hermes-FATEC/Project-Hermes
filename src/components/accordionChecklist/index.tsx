@@ -16,7 +16,10 @@ import {
     Textarea,
     Button,
 } from '@chakra-ui/react'
+import { useState } from 'react';
 import { MdOutlineAddCircleOutline } from 'react-icons/md';
+import toastHandle from '../toast';
+import api from '../../pages/helpers/axios';
 
 interface Props {
     content: Array<ChecklistProps>
@@ -24,8 +27,25 @@ interface Props {
 }
 
 export default function AccordionChecklist({ content, refreshChecklist }: Props) {
+    const [ checklistItem, setChecklistItem ] = useState<ItemChecklistProps>();
+    const toast = toastHandle(); 
+
     const accordColor = useColorModeValue('yellow.500', 'wheat.600');
     const addItem = useColorModeValue('green.500', 'green.600');
+
+    function createItemChecklist(checklistId : number){
+        if(!checklistItem?.description) toast({ title: 'Preencha a descrição do item', status: 'error' });
+
+        api.post(`/checklist/item/${checklistId}`, checklistItem).then(res => {
+            if(res.status == 200) {
+                toast({ title: 'Novo item inserido na checklist', status: 'success' });
+                refreshChecklist();
+            } 
+        }).catch(e => {
+            toast({ title: 'Não foi possível inserir item', status: 'error' });
+            console.log(e);
+        }); 
+    }
 
     return (
         <Flex
@@ -76,10 +96,10 @@ export default function AccordionChecklist({ content, refreshChecklist }: Props)
                                                     </FormControl>
                                                     <FormControl>
                                                         <FormLabel>Descrição</FormLabel>
-                                                        <Textarea placeholder='Insira a descrição' bgColor={"white"} width={"lg"} />
+                                                        <Textarea placeholder='Insira a descrição' bgColor={"white"} width={"lg"} onChange={e => setChecklistItem({ ...checklistItem, description: e.target.value })} />
                                                     </FormControl>                                                   
                                                 </Box>
-                                                <Button variant={'solid'} colorScheme='yellow'>Adicionar</Button>
+                                                <Button variant={'solid'} colorScheme='yellow' onClick={() => createItemChecklist(checklist.id)}>Adicionar</Button>
                                             </AccordionPanel>
                                         </AccordionItem>
                                     </Accordion>
