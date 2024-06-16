@@ -14,8 +14,6 @@ import Checklist from "./pages/checklist";
 import Mission from "./pages/about/mission";
 import api from "./pages/helpers/axios";
 
-
-
 function ProtectedRoutes() {
     const auth = useAuth();
 
