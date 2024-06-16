@@ -7,7 +7,7 @@ import AuthProvider from './hooks/authProvider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider toastOptions={{ defaultOptions: { position: 'top', duration: 2000, isClosable: true }}}>
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>

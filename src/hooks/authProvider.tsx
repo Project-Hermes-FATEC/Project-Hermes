@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import toastHandle from "../components/toast";
 import api from "../pages/helpers/axios";
+import { useToast } from "@chakra-ui/react";
 
 interface Props {
     children: ReactNode
@@ -28,7 +28,7 @@ const AuthContext = createContext<AuthProps | null>(null);
 
 function AuthProvider({ children }: Props) {
     const [isExpired, setExpired] = useState(false);
-    const toast = toastHandle();
+    const toast = useToast();
 
     function save(data: AuthUser) {
         localStorage.setItem('email', data.email)

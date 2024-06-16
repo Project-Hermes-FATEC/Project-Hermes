@@ -3,15 +3,14 @@ import Acordion from "../../../components/acordionUsers";
 import CustomListSearch from "../../../components/customListSearch";
 import Layout from "../../../components/defaultLayout/layout";
 import api from "../../helpers/axios";
-import { Button, useDisclosure } from "@chakra-ui/react";
+import { Button, useDisclosure, useToast } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 import ModalCreateUser from "../../../components/modal/modalUsers";
-import toastHandle from "../../../components/toast";
 
 function ListaUser() {
     const [listUsers, setListUsers] = useState<UserProps[]>([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const toast = toastHandle();
+    const toast = useToast();
 
     async function loadUsers() {
         await api.get('/user/admin', { withCredentials: true }).then(res => {

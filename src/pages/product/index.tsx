@@ -4,20 +4,20 @@ import {
     Divider,
     Stack,
     useDisclosure,
+    useToast,
   } from '@chakra-ui/react'
   import Layout from '../../components/defaultLayout/layout'
   import { ItemListaGenerica } from '../../components/listaHorizontalGenerica/ItemLista'
   import CustomListSearch from '../../components/customListSearch'
   import { useState } from 'react'
   import api from '../helpers/axios'
-  import toastHandle from '../../components/toast'
   import { FaPlus } from 'react-icons/fa'
 import ModalCreateProduct from '../../components/modal/productModal'
   
   function Produto() {
     const [product, setProducts] = useState<ProductProps[]>([]);
     const {isOpen, onClose, onOpen} = useDisclosure();
-    const toast = toastHandle();
+    const toast = useToast();
   
     async function loadSales() {
       await api.get('/product', { withCredentials: true }).then(res => {

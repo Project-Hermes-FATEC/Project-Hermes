@@ -14,9 +14,9 @@ import {
     Select,
     FormLabel,
     FormControl,
+    useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import toastHandle from '../toast';
 import api from '../../pages/helpers/axios';
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 
 export default function Acordion({ content, refreshUser }: Props) {
     const [user, setUser] = useState<UserProps>();
-    const toast = toastHandle();
+    const toast = useToast();
     const accordPanelColor = useColorModeValue('yellow.500', 'wheat.600');
 
     content = content.filter(user => (user.email !== localStorage.getItem("email")));
