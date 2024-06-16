@@ -10,6 +10,7 @@ import {
   Text,
   useColorModeValue,
   Image,
+  useToast,
 } from '@chakra-ui/react'
 
 import logo from '../../assets/icons/logo.png'
@@ -18,12 +19,11 @@ import { Form, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import api from '../helpers/axios'
 import farmWallpaper from '../../assets/backgrounds/farm-background.webp'
-import toastHandle from '../../components/toast'
 import { useAuth } from '../../hooks/authProvider'
 
 export default function Login() {
   const navigate = useNavigate();
-  const toast = toastHandle();
+  const toast = useToast();
   const auth = useAuth();
 
   const [userData, setUserData] = useState({

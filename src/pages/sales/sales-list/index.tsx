@@ -4,13 +4,13 @@ import {
   Divider,
   Stack,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react'
 import Layout from '../../../components/defaultLayout/layout'
 import { ItemListaGenerica } from '../../../components/listaHorizontalGenerica/ItemLista'
 import CustomListSearch from '../../../components/customListSearch'
 import { useState } from 'react'
 import api from '../../helpers/axios'
-import toastHandle from '../../../components/toast'
 import ModalCreateSales from '../../../components/modal/createSalesModal'
 import { FaPlus } from 'react-icons/fa'
 
@@ -23,7 +23,7 @@ const options = [
 function ListaVendas() {
   const [sales, setSales] = useState<SalesProps[]>([]);
   const {isOpen, onClose, onOpen} = useDisclosure();
-  const toast = toastHandle();
+  const toast = useToast();
 
   async function loadSales() {
     await api.get('/sales', { withCredentials: true }).then(res => {
@@ -31,7 +31,7 @@ function ListaVendas() {
         setSales(res.data);
       }
     }).catch(e => {
-      toast({ title: "Não foi possível carregar as vendas", status: 'error' });
+      toast({ title: "Não foi possível carregar as vendas", status: 'error', id: Date.now() });
       console.log(e);
     })
   };

@@ -1,6 +1,5 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select, InputRightElement, InputGroup } from "@chakra-ui/react"
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, Input, ModalFooter, Select, InputRightElement, InputGroup, useToast } from "@chakra-ui/react"
 import React, { useEffect, useState } from "react"
-import toastHandle from "../../toast";
 import api from "../../../pages/helpers/axios";
 
 interface Props {
@@ -14,7 +13,7 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
     const [user, setUser] = useState<UserProps>(emptyUser);
     const [password, setPassword] = useState('JohnDeere2023');
     const [show, setShow] = React.useState(false)
-    const toast = toastHandle();
+    const toast = useToast();
 
     useEffect(() => {loadUsers()}, [isOpen]);
 
