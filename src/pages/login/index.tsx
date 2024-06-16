@@ -38,7 +38,7 @@ export default function Login() {
 
     setLoginLoading(true);
 
-    api.post('/auth/login', userData, { withCredentials: true })
+    await api.post('/auth/login', userData, { withCredentials: true })
       .then((res) => {
         if (res.status === 200) {
           toast({ title: 'Login efetuado com sucesso!', status: 'success' });
@@ -73,11 +73,11 @@ export default function Login() {
           >
             <Stack align={'center'}>
               <Image src={logo} boxSize='100px' />
-              <Text fontSize={'lg'} color={'orange.300'}>Hermes</Text>
+              <Text fontSize={'lg'} fontWeight={'bold'} color={'orange.300'}>Hermes</Text>
             </Stack>
 
-            <Stack spacing={4}>
-              <Form>
+            <Form>
+              <Stack spacing={4}>
                 <FormControl id="email">
                   <FormLabel>Email</FormLabel>
                   <Input type="email" required={true} onChange={(e) => setUserData({ ...userData, email: e.target.value })} />
@@ -108,8 +108,8 @@ export default function Login() {
                     </Button>
                   </Stack>
                 </Stack>
-              </Form>
-            </Stack>
+              </Stack>
+            </Form>
           </Box>
         </Stack>
       </Flex>

@@ -13,6 +13,7 @@ import { useAuth } from "./hooks/authProvider";
 import Checklist from "./pages/checklist";
 import Mission from "./pages/about/mission";
 import api from "./pages/helpers/axios";
+import ChangePass from "./pages/user/changePass";
 
 function ProtectedRoutes() {
     const auth = useAuth();
@@ -20,11 +21,11 @@ function ProtectedRoutes() {
     api.interceptors.response.use(
         response => response,
         error => {
-            if (error.response && [401, 403].includes(error.response.status)) {
+            if (!error.response.data.error.match('inválida') && error.response && [401, 403].includes(error.response.status)) {
                 console.log('Não autenticado', error);
                 auth?.setTokenEx();
             } else {
-                error;
+                if(error.response) return Promise.reject(error);
             }
         });
 
@@ -53,6 +54,9 @@ const router = createBrowserRouter([
         element: <ProtectedRoutes />,
         children:
             [
+                { path: 'user', children: [ 
+                    { path: 'changePass', element: <ChangePass /> }
+                 ]},
                 { path: 'home', element: <Home /> },
                 { path: 'sobre', element: <About /> },
                 { path: 'missao', element: <Mission /> },
