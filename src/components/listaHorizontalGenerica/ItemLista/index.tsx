@@ -44,7 +44,7 @@ export function ItemListaGenerica ({ title, title2, options, checked = false }: 
             <Image boxSize='150px' objectFit="contain" src={trator_img} alt="Tractor" />
             <Stack>
                 <Link to='/produto/verificarEntrada'>
-                    <Button onClick={() => { redirect('/') }}
+                    <Button key={'verify'} onClick={() => { redirect('/') }}
                         size="md"
                         color={useColorModeValue(colorTextLight, colorTextDark)}
                         bgColor={useColorModeValue(bgColorLight, bgColorDark)}>

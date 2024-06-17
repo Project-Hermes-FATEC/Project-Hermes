@@ -39,7 +39,7 @@ function ListaVendas() {
   return (
     <Layout>
       <ModalCreateSales key={'1223'} isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
-      <Box py={6} px={5} width="full" bgColor={"blue.100"} >
+      <Box py={6} px={5} width="full" bgColor={"red.100"} >
         <Stack spacing={4} width={'100%'} direction={'column'}>
           <CustomListSearch title='Lista de' 
           title_sub='Vendas' 

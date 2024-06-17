@@ -64,8 +64,8 @@ function ModalCreateUser({ isOpen, onClose, loadUsers }: Props) {
 
                         <FormControl isRequired={true} mt={4}> <FormLabel>Tipo de usuário</FormLabel>
                             <Select placeholder='Selecione o tipo de usuário' onChange={(event) => setUser({ ...user, type: event.target.value })}>
-                                <option>Admin</option>
-                                <option>User</option>
+                                <option>admin</option>
+                                <option>user</option>
                             </Select>
                         </FormControl>
                     </ModalBody>
