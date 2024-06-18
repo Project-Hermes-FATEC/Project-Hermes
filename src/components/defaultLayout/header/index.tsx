@@ -174,7 +174,7 @@ export default function Header() {
                                 </Box>
                                 <br />
                                 <MenuDivider />
-                                <MenuItem key={'itemMenuChangePass'} onClick={() => {navigate('/user/changePass')}}>Aleterar Senha</MenuItem>
+                                <MenuItem key={'itemMenuChangePass'} onClick={() => {navigate('/user/changePass')}}>Alterar Senha</MenuItem>
                                 <MenuItem key={'itemMenuLogout'} onClick={logOut}>Sair</MenuItem>
                             </MenuList>
                         </Menu>

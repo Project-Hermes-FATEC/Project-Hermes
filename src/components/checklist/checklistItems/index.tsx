@@ -24,11 +24,12 @@ export default function CheckListItems({ items, removeItem, updateItem, checklis
             {
                 items?.sort((i, j) => { return i.id - j.id }).map((item, index) => (
                     <Card key={item.id}>
-                        <CardHeader>
-                            <Badge><Text fontSize={'2xl'}>Item {index + 1}</Text></Badge>
-                        </CardHeader>
-                        <CardBody>
-                            <form>
+                        <form>
+                            <CardHeader>
+                                <Badge><Text fontSize={'2xl'}>Item {index + 1}</Text></Badge>
+                            </CardHeader>
+                            <CardBody>
+
                                 <FormControl>
                                     <FormLabel>Descrição</FormLabel>
                                     <Textarea
@@ -44,12 +45,13 @@ export default function CheckListItems({ items, removeItem, updateItem, checklis
                                     <Button bg={'green'} onClick={() => { updateItem(item.id, checklistId, changedItem); setchangedItem(''); setEditableItem(item.id); }}><FaCheck /></Button>
                                     <Button bg={'red'} type="reset" onClick={() => { setEditableItem(item.id) }}><FaXmark /></Button>
                                 </Box>
-                            </form>
-                        </CardBody>
-                        <CardFooter justifyContent={'space-between'}>
-                            <Button colorScheme="blue" onClick={() => setEditableItem(item.id)}>Alterar</Button>
-                            <Button colorScheme="red" onClick={() => removeItem(item.id, checklistId)}>Excluir</Button>
-                        </CardFooter>
+
+                            </CardBody>
+                            <CardFooter justifyContent={'space-between'}>
+                                <Button colorScheme="blue" isDisabled={itemId == item.id} onClick={() => setEditableItem(item.id)}>Alterar</Button>
+                                <Button colorScheme="red" onClick={() => removeItem(item.id, checklistId)}>Excluir</Button>
+                            </CardFooter>
+                        </form>
                     </Card>
                 ))
             }

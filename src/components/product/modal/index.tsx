@@ -26,13 +26,15 @@ function ModalCreateProduct({ isOpen, onClose, loadSales }: Props) {
                 onClose();
             }
         }).catch(e => {
+            if (e.response.data.error == "Esse produto já existe!") return toast({ title: 'Esse produto já existe!', status: 'error' });
+
             toast({ title: 'Não foi possível cadastrar o produto', status: 'error' });
         });
     }
 
     async function loadChecklists() {
         await api.get('/checklist').then(res => {
-            if(res.status == 200){
+            if (res.status == 200) {
                 setChecklists(res.data);
             }
         });
@@ -71,10 +73,10 @@ function ModalCreateProduct({ isOpen, onClose, loadSales }: Props) {
                             <FormLabel>Cheklist</FormLabel>
                             <Select
                                 placeholder='Selecione uma checklist para o produto'
-                                onChange={e => setProduct({ ...product, checklist: { id: Number(e.target.value), title: '', description: '' }})}>
+                                onChange={e => setProduct({ ...product, checklist: { id: Number(e.target.value), title: '', description: '' } })}>
                                 {checklists?.map(item => (
                                     <option key={item.id} value={item.id}>{item.title}</option>
-                                ))}                                
+                                ))}
                             </Select>
                         </FormControl>
 

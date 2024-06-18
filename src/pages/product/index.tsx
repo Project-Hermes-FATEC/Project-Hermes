@@ -29,6 +29,22 @@ function Produto() {
     })
   };
 
+  async function updateItem(id: number, changedItem: ProductProps) {
+    if (!id || !changedItem.description && !changedItem.checklist) return toast({ title: "Preencha os campos necessários!", status: 'error' });
+
+    await api.put(`/product/${id}`, changedItem).then(res => {
+      if (res.status == 200) return toast({ title: "Produto atualizado com sucesso!", status: 'success' });
+    }).catch(e => {
+      toast({ title: "Não foi possível atualizar o item", status: 'error' });
+      console.log(e);
+    })
+
+  }
+
+  async function removeItem(id: number) {
+
+  }
+
   return (
     <Layout>
       <ModalCreateProduct isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
@@ -39,17 +55,7 @@ function Produto() {
             placeHolder='Pesquisar por produtos'
             buttons={[<Button key={'productListButton'} onClick={onOpen} leftIcon={<FaPlus />} background={"green.300"}>Cadastrar novo produto</Button>]} />
           {
-            <ProductItemsCard items={product} />
-            /* product.map(produc => (
-              <Box key={produc.id}>
-                <Divider />
-                <ItemListaGenerica
-                  title={produc.name.toString()}
-                  title2={produc.description}
-                  checked={true}
-                  options={[]} />
-              </Box>
-            )) */
+            <ProductItemsCard items={product} removeItem={removeItem} updateItem={updateItem} />
           }
         </Stack>
       </Box>
