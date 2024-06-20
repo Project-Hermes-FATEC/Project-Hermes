@@ -21,6 +21,7 @@ export default function CheckListItems({ items, removeItem, updateItem, checklis
 
     return (
         <SimpleGrid w={'600'} spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
+            {children}
             {
                 items?.sort((i, j) => { return i.id - j.id }).map((item, index) => (
                     <Card key={item.id}>
@@ -55,7 +56,6 @@ export default function CheckListItems({ items, removeItem, updateItem, checklis
                     </Card>
                 ))
             }
-            {children}
         </SimpleGrid>
     )
 }

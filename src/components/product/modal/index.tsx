@@ -5,17 +5,17 @@ import api from "../../../pages/helpers/axios"
 interface Props {
     isOpen: boolean
     onClose(): void
-    loadSales(): void
+    loadProducts(): void
 }
 
-function ModalCreateProduct({ isOpen, onClose, loadSales }: Props) {
+function ModalCreateProduct({ isOpen, onClose, loadProducts }: Props) {
     const emptyProduct = { name: '', description: '', type: '', id: 0 };
     const [product, setProduct] = useState<ProductProps>(emptyProduct);
     const [checklists, setChecklists] = useState<ChecklistProps[]>();
     const initialRef = React.useRef(null)
     const toast = useToast();
 
-    useEffect(() => { loadSales(); loadChecklists(); setProduct(emptyProduct); }, [isOpen]);
+    useEffect(() => { loadProducts(); loadChecklists(); setProduct(emptyProduct); }, [isOpen]);
 
     async function createProduct() {
         if (!product.name || !product.type || !product.description) return toast({ title: "Preencha os campos obrigatórios", status: "error" });

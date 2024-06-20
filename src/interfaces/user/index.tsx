@@ -18,11 +18,11 @@ interface ProductProps{
 
 interface SalesProps{
     id: number
-    createdDate: Date
     salesNumber: number
-    userid?: UserProps
+    createdDate?: Date
+    user?: UserProps
     product?: ProductProps 
-    checklistasales?: ChecklistProps
+    checklist?: ChecklistProps[]
 }
 
 interface ChecklistProps{

@@ -21,10 +21,12 @@ function Checklist() {
   async function loadChecklists() {
     await api.get('/checklist', { withCredentials: true }).then(res => {
       if (res.status == 200) {
-        setChecklist(res.data);
+        const checklists: ChecklistProps[] = res.data;
+
+        setChecklist(checklists.sort((a, b) => { return b.id - a.id }));
       }
     }).catch(e => {
-      toast({ title: "Não foi possível carregar os produtos", status: 'error', id: Date.now() });
+      toast({ title: "Não foi possível carregar as checklists", status: 'error', id: Date.now() });
       console.log(e);
     })
   };

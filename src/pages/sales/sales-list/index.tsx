@@ -11,7 +11,7 @@ import { ItemListaGenerica } from '../../../components/listaHorizontalGenerica/I
 import CustomListSearch from '../../../components/customListSearch'
 import { useState } from 'react'
 import api from '../../helpers/axios'
-import ModalCreateSales from '../../../components/modal/createSalesModal'
+import ModalCreateSales from '../../../components/salesPage/createSalesModal'
 import { FaPlus } from 'react-icons/fa'
 
 const options = [
@@ -28,7 +28,9 @@ function ListaVendas() {
   async function loadSales() {
     await api.get('/sales', { withCredentials: true }).then(res => {
       if (res.status === 200) {
-        setSales(res.data);
+        const sales: SalesProps[] = res.data;
+
+        setSales(sales.sort((a, b) => {return b.id - a.id}));
       }
     }).catch(e => {
       toast({ title: "Não foi possível carregar as vendas", status: 'error', id: Date.now() });
@@ -38,7 +40,7 @@ function ListaVendas() {
 
   return (
     <Layout>
-      <ModalCreateSales key={'1223'} isOpen={isOpen} onClose={onClose} loadSales={loadSales} />
+      <ModalCreateSales key={'1223'} isOpen={isOpen} onOpen={onOpen} onClose={onClose} loadSales={loadSales} />
       <Box py={6} px={5} width="full" bgColor={"red.100"} >
         <Stack spacing={4} width={'100%'} direction={'column'}>
           <CustomListSearch title='Lista de' 

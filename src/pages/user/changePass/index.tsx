@@ -56,6 +56,7 @@ export default function ChangePass() {
                 justify={'center'}>
                 <Stack spacing={8} mx={'auto'} maxW={'lg'} width={'100%'} py={12} px={6}>
                     <Text
+                        textAlign='center'
                         bgGradient='linear(to-r, green.400, yellow.500)'
                         bgClip='text'
                         fontSize='6xl'

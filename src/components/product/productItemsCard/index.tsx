@@ -1,5 +1,5 @@
-import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, FormControl, FormLabel, Image, Select, SimpleGrid, Text, Textarea, keyframes, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, FormControl, FormLabel, Image, Input, Select, SimpleGrid, Text, Textarea, keyframes, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import tractorExample from '../../../assets/produtos/trator_example.png'
@@ -13,16 +13,32 @@ interface Props {
 
 export default function ProductItemsCard({ items, updateItem, removeItem }: Props) {
     const emptyProduct: ProductProps = { name: '', description: '', type: '', id: 0 };
-    const [itemId, setItemId] = useState<number | null>(null);
     const [changedItem, setchangedItem] = useState<ProductProps>(emptyProduct);
     const [checklist, setChecklist] = useState<ChecklistProps[]>();
+    const [itemId, setItemId] = useState<number | null>(null);
     const toast = useToast();
     const pulse = keyframes`0% { box-shadow: 0 0 5px 2px green }
                             50% { box-shadow: 0 0 10px 7px green }
                             100% { box-shadow: 0 0 5px 2px green }`;
 
+    useEffect(() => { loadChecklist() }, [items]);
+
     function setEditableItem(id: number) {
         setItemId(itemId == id ? null : id);
+    }
+
+    function clearChange() {
+        setchangedItem(emptyProduct);
+    }
+
+    function handleInput(item: ProductProps) {
+        if (item.checklist?.id != changedItem.checklist?.id || item.description != changedItem.description || item.image != changedItem.image || item.name != changedItem.name) {
+            updateItem(item.id, changedItem);
+            setchangedItem(emptyProduct);
+            setEditableItem(item.id);
+        } else {
+            toast({ title: "Nenhum campo alterado!", status: 'info' });
+        }
     }
 
     async function loadChecklist() {
@@ -37,7 +53,7 @@ export default function ProductItemsCard({ items, updateItem, removeItem }: Prop
     return (
         <SimpleGrid w={'600'} spacing={10} p={10} templateColumns='repeat(auto-fill, minmax(20%, 1fr))'>
             {
-                items?.sort((i, j) => { return i.id - j.id }).map((item) => (
+                items?.map((item) => (
                     <Card key={item.id}
                         _hover={{
                             animation: `${pulse} 1s infinite`,
@@ -45,9 +61,20 @@ export default function ProductItemsCard({ items, updateItem, removeItem }: Prop
                             h: 'full',
                             top: -1,
                         }}>
-                        <CardHeader>
-                            <Badge colorScheme="green"><Text fontSize={'2xl'}>{item.name}</Text></Badge>
-                        </CardHeader>
+                        {
+                            itemId == item.id ?
+                            <FormControl p={4}>
+                                <FormLabel>
+                                    Nome
+                                </FormLabel>
+
+                                <Input width={"fit-content"} border={'2px'} defaultValue={item.name} onChange={(e) => setchangedItem({ ...changedItem, name: e.target.value })} />
+                            </FormControl>
+                            :
+                                <CardHeader>
+                                    <Badge colorScheme="green"><Text fontSize={'2xl'}>{item.name}</Text></Badge>
+                                </CardHeader>
+                        }
                         <CardBody>
                             <form>
                                 <Divider mb={3} mt={3} />
@@ -80,32 +107,31 @@ export default function ProductItemsCard({ items, updateItem, removeItem }: Prop
                                     </FormLabel>
 
                                     <Select
-                                        onClick={loadChecklist}
                                         pointerEvents={itemId == item.id ? 'auto' : 'none'}
                                         border={itemId == item.id ? '2px' : ''}
                                         defaultValue={item.checklist?.title}
-                                        onChange={(e) => { setchangedItem({ ...changedItem, checklist: { id: Number(e.target.value), title: '', description: '' } })}}
+                                        onChange={(e) => { setchangedItem({ ...changedItem, checklist: { id: Number(e.target.value), description: '', title: '' } }) }}
                                         fontSize={'lg'}>
                                         {
                                             itemId != item.id ?
                                                 <option>{item.checklist?.title}</option>
                                                 :
-                                                checklist?.map(check => (
-                                                    <option>{check.title}</option>
+                                                checklist?.sort((a) => item.checklist ? (a.title != item.checklist.title ? 1 : -1) : 0).map(check => (
+                                                    <option value={check.id}>{check.title}</option>
                                                 ))
                                         }
                                     </Select>
                                 </FormControl>
 
                                 <Box visibility={itemId == item.id ? 'visible' : 'collapse'} m={'5px'} display={itemId == item.id ? 'flex' : 'none'} justifyContent={'space-between'}>
-                                    <Button bg={'green'} onClick={() => { updateItem(item.id, changedItem); setchangedItem(emptyProduct); setEditableItem(item.id); }}><FaCheck /></Button>
-                                    <Button bg={'red'} type="reset" onClick={() => { setEditableItem(item.id) }}><FaXmark /></Button>
+                                    <Button bg={'green'} onClick={() => { handleInput(item) }}><FaCheck /></Button>
+                                    <Button bg={'red'} type="reset" onClick={() => { setEditableItem(item.id); clearChange() }}><FaXmark /></Button>
                                 </Box>
                             </form>
                         </CardBody>
                         <CardFooter justifyContent={'space-between'}>
-                            <Button colorScheme="blue" isDisabled={itemId == item.id} onClick={() => setEditableItem(item.id)}>Alterar</Button>
-                            {/* <Button colorScheme="red" onClick={() => removeItem(item.id)}>Excluir</Button> */}
+                            <Button colorScheme="blue" isDisabled={itemId == item.id} onClick={() => { setEditableItem(item.id); changedItem.checklist = item.checklist }}>Alterar</Button>
+                            <Button colorScheme="red" onClick={() => removeItem(item.id)}>Excluir</Button>
                         </CardFooter>
                     </Card>
                 ))

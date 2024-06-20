@@ -17,7 +17,7 @@ function ListaUser() {
             if (res.status === 201) {
                 const users: UserProps[] = res.data;
 
-                setListUsers(users.filter(user => (user.email != localStorage.getItem("email"))));
+                setListUsers(users.filter(user => (user.email != localStorage.getItem("email"))).sort((a, b) => { return b.id - a.id }));
             }
         }).catch(e => {
             toast({ title: "Não foi possível carregar", status: 'error', id: Date.now() });
